@@ -8,7 +8,7 @@
     <!-- Tailwind CSS for Modern Styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Google Fonts: Poppins for a clean, modern look like PHOTO IQ -->
+    <!-- Google Fonts: Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700;900&display=swap" rel="stylesheet">
     
     <style>
@@ -28,7 +28,6 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.08);
         }
 
-        /* Specific style for the highlighted middle card */
         .highlight-card {
             transform: scale(1.05);
             z-index: 10;
@@ -46,32 +45,28 @@
                 transform: scale(1) translateY(-5px);
             }
         }
+
+        /* স্লাইডারের স্মুথ স্ক্রলিং ও ট্রানজিশন */
+        #sliderTrack {
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
     </style>
 </head>
 <body class="antialiased">
 
-    <!-- Header Section (Optional Branding) -->
-    <header class="w-full bg-white shadow-sm py-4">
+    <!-- Header Section -->
+    <header class="w-full bg-white shadow-sm py-4 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <h1 class="text-3xl font-black tracking-tight">ALBUMSTUDIO <span class="text-blue-600">PRO</span></h1>
+            <h1 class="text-3xl font-black tracking-tight">ALBUMSTUDIO <span class="text-red-600">PRO</span></h1>
         </div>
     </header>
 
-    <!-- Hero Banner Section -->
-    <section class="w-full max-w-5xl mx-auto px-4 py-8">
-        <div class="rounded-2xl overflow-hidden shadow-2xl border border-gray-200">
-            <!-- Automatically loads your provided flyer image -->
-            <img src="AlbumStudio PRO Promotional Flyer.png" alt="AlbumStudio PRO Promotional Flyer" class="w-full h-auto object-cover" onerror="this.src='https://placehold.co/1200x800/0f1015/00ffff?text=AlbumStudio+PRO+Banner+Image+Missing'">
-        </div>
-    </section>
-
-    <!-- Pricing Section -->
-    <section class="w-full max-w-6xl mx-auto px-4 py-16">
+    <!-- 1. Pricing Section (উপরে সাজানো) -->
+    <section class="w-full max-w-6xl mx-auto px-4 pt-12 pb-16">
         
-        <!-- Pricing Titles -->
-        <div class="text-center mb-16">
-            <h2 class="text-4xl md:text-5xl font-black mb-3">ALBUMSTUDIO <span class="text-red-600">PRO</span></h2>
-            <p class="text-gray-500 text-lg">Choose Your Subscription</p>
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-5xl font-black mb-3">Choose Your <span class="text-red-600">Plan</span></h2>
+            <p class="text-gray-500 text-base md:text-lg">Instant Activation & Lifetime Updates</p>
         </div>
 
         <!-- Pricing Grid -->
@@ -89,9 +84,8 @@
                 </a>
             </div>
 
-            <!-- 2. 1 Year Subscription (Highlighted Center Card) -->
+            <!-- 2. 1 Year Subscription -->
             <div class="pricing-card highlight-card bg-white rounded-2xl shadow-xl p-8 md:p-12 border-2 border-red-600 flex flex-col h-full justify-between relative">
-                <!-- Highlight Badge -->
                 <div class="absolute top-0 right-6 md:right-8 transform -translate-y-1/2 bg-red-600 text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-md">
                     Most Buyers Choice
                 </div>
@@ -121,6 +115,67 @@
         </div>
     </section>
 
+    <!-- 2. YouTube Videos Showcase Section -->
+    <section class="w-full max-w-6xl mx-auto px-4 py-12 bg-white rounded-3xl shadow-sm border border-gray-100 my-8">
+        <div class="text-center mb-10">
+            <h2 class="text-3xl font-black mb-2">Watch It In <span class="text-red-600">Action</span></h2>
+            <p class="text-gray-500 text-sm md:text-base">সফটওয়্যারের কাজ ও ব্যবহারবিধি ভিডিওতে দেখুন</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200">
+                <div class="relative w-full aspect-video rounded-xl overflow-hidden shadow">
+                    <iframe class="w-full h-full" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="AlbumStudio PRO Demo 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <h4 class="font-bold text-lg mt-3 text-gray-800">১ ক্লিকে ১২x৩৬ অ্যালবাম ডিজাইন টিউটোরিয়াল</h4>
+            </div>
+
+            <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200">
+                <div class="relative w-full aspect-video rounded-xl overflow-hidden shadow">
+                    <iframe class="w-full h-full" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="AlbumStudio PRO Demo 2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <h4 class="font-bold text-lg mt-3 text-gray-800">অটোমেটিক কালার কারেকশন ও পাসপোর্ট মেকার</h4>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Image Slider Section (ছোট সাইজ ও ৫টি অটোমেটিক স্লাইডিং ইমেজ) -->
+    <section class="w-full max-w-xl mx-auto px-4 py-8">
+        <div class="text-center mb-4">
+            <p class="text-xs uppercase font-bold tracking-widest text-gray-400">Software Previews</p>
+        </div>
+
+        <div class="relative overflow-hidden rounded-2xl shadow-lg border border-gray-200 bg-white p-2">
+            <!-- Slider Image Strip -->
+            <div id="sliderTrack" class="flex">
+                <div class="w-full flex-shrink-0">
+                    <img src="photo1.png" alt="Photo 1" class="w-full h-64 md:h-72 object-cover rounded-xl" onerror="this.src='https://placehold.co/600x350/0f1015/ffffff?text=photo1.png'">
+                </div>
+                <div class="w-full flex-shrink-0">
+                    <img src="photo02.png" alt="Photo 2" class="w-full h-64 md:h-72 object-cover rounded-xl" onerror="this.src='https://placehold.co/600x350/1e293b/ffffff?text=photo02.png'">
+                </div>
+                <div class="w-full flex-shrink-0">
+                    <img src="photo03.png" alt="Photo 3" class="w-full h-64 md:h-72 object-cover rounded-xl" onerror="this.src='https://placehold.co/600x350/334155/ffffff?text=photo03.png'">
+                </div>
+                <div class="w-full flex-shrink-0">
+                    <img src="photo04.png" alt="Photo 4" class="w-full h-64 md:h-72 object-cover rounded-xl" onerror="this.src='https://placehold.co/600x350/475569/ffffff?text=photo04.png'">
+                </div>
+                <div class="w-full flex-shrink-0">
+                    <img src="photo05.png" alt="Photo 5" class="w-full h-64 md:h-72 object-cover rounded-xl" onerror="this.src='https://placehold.co/600x350/64748b/ffffff?text=photo05.png'">
+                </div>
+            </div>
+
+            <!-- স্লাইডার ডট ইন্ডিকেটর -->
+            <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
+                <button onclick="goToSlide(0)" class="slider-dot w-2.5 h-2.5 rounded-full bg-red-600 transition"></button>
+                <button onclick="goToSlide(1)" class="slider-dot w-2.5 h-2.5 rounded-full bg-gray-300 transition"></button>
+                <button onclick="goToSlide(2)" class="slider-dot w-2.5 h-2.5 rounded-full bg-gray-300 transition"></button>
+                <button onclick="goToSlide(3)" class="slider-dot w-2.5 h-2.5 rounded-full bg-gray-300 transition"></button>
+                <button onclick="goToSlide(4)" class="slider-dot w-2.5 h-2.5 rounded-full bg-gray-300 transition"></button>
+            </div>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer class="w-full bg-white border-t border-gray-100 py-8 mt-12">
         <div class="max-w-7xl mx-auto px-4 text-center text-gray-400 text-sm">
@@ -128,6 +183,41 @@
             For support, contact: +91 6296085132
         </div>
     </footer>
+
+    <!-- Slider Script (অটোমেটিক ৩ সেকেন্ড পরপর স্লাইড হবে) -->
+    <script>
+        const sliderTrack = document.getElementById('sliderTrack');
+        const dots = document.querySelectorAll('.slider-dot');
+        const totalSlides = 5;
+        let currentSlide = 0;
+        const slideIntervalTime = 3000; // ৩ সেকেন্ড (৫ সেকেন্ড করতে চাইলে 5000 লিখবেন)
+
+        function updateSlider() {
+            sliderTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
+            dots.forEach((dot, index) => {
+                if (index === currentSlide) {
+                    dot.classList.remove('bg-gray-300');
+                    dot.classList.add('bg-red-600');
+                } else {
+                    dot.classList.remove('bg-red-600');
+                    dot.classList.add('bg-gray-300');
+                }
+            });
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateSlider();
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateSlider();
+        }
+
+        // প্রতি ৩ সেকেন্ড পর পর স্লাইড পরিবর্তন
+        setInterval(nextSlide, slideIntervalTime);
+    </script>
 
 </body>
 </html>
