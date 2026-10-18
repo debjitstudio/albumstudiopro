@@ -3,617 +3,774 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- Google Search Console Verification -->
-    <meta name="google-site-verification" content="TQ1oWa6EbtSrpjrWZ_SqgzSAmA6ohOQ18yohV4BQhiM" />
-    
-
-    <!-- 1. Google Top Ranking SEO Title & Meta Tags -->
-    <title>AlbumStudio PRO - #1 Automatic Wedding Album Design Software in India | 12x36 PSD & Passport Maker</title>
-    <meta name="description" content="Download AlbumStudio PRO - India's Best AI Automatic Wedding Album Design Software. Create 12x36 wedding albums in 1 minute, auto color correction, passport photo maker & 3D flipbook.">
-    <meta name="keywords" content="AlbumStudio PRO, automatic album design software, wedding album design software, 12x36 album psd free download, karizma album software, passport photo maker software, Debjit Studio">
-    <meta name="author" content="AlbumStudio PRO">
-    <meta name="robots" content="index, follow">
-
-    <!-- Open Graph for Social Media & WhatsApp Share -->
-    <meta property="og:title" content="AlbumStudio PRO - 1-Click Automatic Album Design Software">
-    <meta property="og:description" content="Design 12x36 Wedding Albums in 1 Minute! Starting at just ₹83/month. Instant WhatsApp Activation.">
-    <meta property="og:image" content="albumsoftwarepoduct.png">
-    <meta property="og:type" content="website">
-
-    <!-- 2. Website Favicon Icon (icon.png) -->
+    <meta name="theme-color" content="#070a12">
+    <title>Client Photo Selection | AlbumStudio PRO</title>
     <link rel="icon" type="image/png" href="icon.png">
-    <link rel="apple-touch-icon" href="icon.png">
-
-    <!-- 3. SSL / HTTPS Security Enforcement Meta -->
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-    <script>
-        // Force HTTPS SSL Redirect when hosted online
-        if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1' && location.protocol !== 'file:') {
-            location.replace(`https:${location.href.substring(location.protocol.length)}`);
-        }
-    </script>
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <style>
-        /* Anti-Copy User Selection Lock */
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #070a12;
-            color: #ffffff;
-            overflow-x: hidden;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
+        :root {
+            color-scheme: dark;
+            --bg: #070a12;
+            --panel: #111827;
+            --panel-deep: #0b101e;
+            --border: #273449;
+            --muted: #9ca3af;
+            --yellow: #facc15;
+            --blue: #2563eb;
+            --green: #22c55e;
         }
-
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: radial-gradient(circle at top, #131b2e 0, var(--bg) 48%);
+            color: #fff;
+            font-family: Poppins, "Segoe UI", sans-serif;
+            overflow-x: hidden;
+        }
+        button, input { font: inherit; }
+        button { cursor: pointer; }
         img {
             -webkit-user-drag: none;
-            user-drag: none;
-            pointer-events: none;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
         }
-
-        /* Golden Shooting Lines Overlay Canvas */
-        #goldenOverlayCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-            z-index: 40;
+        .hidden { display: none !important; }
+        .topbar {
+            position: sticky; top: 0; z-index: 20;
+            background: rgba(11, 16, 30, .94);
+            border-bottom: 1px solid #263244;
+            backdrop-filter: blur(14px);
+            padding: 13px 18px;
         }
-
-        .text-gold { color: #facc15; }
-        .bg-gold { background-color: #facc15; }
-        .border-gold { border-color: #facc15; }
-        .bg-dark-card { background-color: #121726; }
-
-        /* Category Button Hover */
-        .cat-btn:hover {
-            border-color: #facc15;
-            box-shadow: 0 0 20px rgba(250, 204, 21, 0.3);
-            transform: translateY(-4px);
+        .topbar-inner {
+            max-width: 1440px; margin: auto; display: flex;
+            align-items: center; justify-content: space-between; gap: 14px;
         }
-
-        /* Plan Option Styling */
-        .plan-btn {
-            transition: all 0.3s ease;
+        .brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
+        .brand-mark {
+            width: 42px; height: 42px; flex: 0 0 42px; border-radius: 13px;
+            display: grid; place-items: center; color: #101010; font-size: 19px;
+            background: linear-gradient(135deg, #fde047, #d97706);
+            box-shadow: 0 0 20px #facc1528;
         }
-        .plan-btn.active {
-            border-color: #3b82f6;
-            background: linear-gradient(145deg, rgba(59, 130, 246, 0.2), rgba(6, 182, 212, 0.1));
-            box-shadow: 0 0 25px rgba(59, 130, 246, 0.4);
-            transform: translateY(-2px);
+        .brand-title { font-size: 17px; font-weight: 900; line-height: 1.15; letter-spacing: .5px; }
+        .brand-title span { color: var(--yellow); }
+        .brand-subtitle { color: var(--muted); font-size: 9px; letter-spacing: 1.8px; text-transform: uppercase; margin-top: 4px; }
+        .event-meta {
+            display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end;
+            gap: 8px 14px; color: #9ca3af; font-size: 11px;
+            border: 1px solid #334155; background: #131b2e; border-radius: 99px; padding: 8px 13px;
         }
-
-        /* Glowing Buy Button Animation */
-        @keyframes pulseGlow {
-            0%, 100% { box-shadow: 0 0 25px rgba(37, 99, 235, 0.6); }
-            50% { box-shadow: 0 0 40px rgba(6, 182, 212, 0.9); }
+        .event-meta strong { color: var(--yellow); overflow-wrap: anywhere; }
+        main { width: 100%; max-width: 1440px; margin: 0 auto; padding: 24px 18px 125px; }
+        .center-state { min-height: 58vh; display: flex; align-items: center; justify-content: center; padding: 18px 0; }
+        .state-card {
+            width: 100%; max-width: 480px; background: rgba(17, 24, 39, .96);
+            border: 1px solid var(--border); border-radius: 24px; padding: 28px;
+            text-align: center; box-shadow: 0 24px 70px #0008;
         }
-        .glow-btn {
-            animation: pulseGlow 2.5s infinite;
+        .state-icon {
+            width: 66px; height: 66px; display: grid; place-items: center; margin: 0 auto 15px;
+            border-radius: 20px; background: #facc1517; border: 1px solid #facc1545;
+            color: var(--yellow); font-size: 26px;
         }
-
-        /* 3D Coverflow Slider Styles */
-        .slider-wrapper {
-            perspective: 1000px;
-            position: relative;
-            height: 360px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 1.5rem;
+        h1, h2, h3, p { margin-top: 0; }
+        .state-card h2 { margin-bottom: 7px; font-size: 23px; font-weight: 900; }
+        .muted { color: var(--muted); }
+        .small { font-size: 12px; line-height: 1.7; }
+        .spin {
+            width: 50px; height: 50px; border-radius: 50%; border: 4px solid #374151;
+            border-top-color: var(--yellow); animation: spin .8s linear infinite; margin: 0 auto 17px;
         }
-        
-        .slide {
-            position: absolute;
-            width: 60%;
-            height: 100%;
-            transition: transform 0.5s ease, opacity 0.5s ease, z-index 0.5s ease;
-            opacity: 0;
-            border-radius: 1.25rem;
-            overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.7);
-            pointer-events: none;
-            border: 1px solid #1f2937;
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .pin-input {
+            width: 205px; margin: 17px auto 8px; display: block;
+            border: 2px solid #374151; border-radius: 15px; background: #080d17;
+            color: var(--yellow); padding: 14px 12px; text-align: center;
+            font-size: 27px; font-weight: 900; letter-spacing: 10px; outline: none;
         }
-
-        .slide img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .pin-input:focus { border-color: var(--yellow); }
+        .btn {
+            border: 0; border-radius: 11px; padding: 12px 16px; font-weight: 800;
+            transition: transform .15s ease, filter .15s ease; display: inline-flex;
+            align-items: center; justify-content: center; gap: 8px; color: #fff;
         }
-
-        .slide.active {
-            transform: translateX(0) scale(1) translateZ(0);
-            opacity: 1;
-            z-index: 10;
-            pointer-events: auto;
-            border-color: #facc15;
+        .btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
+        .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+        .btn-primary { background: linear-gradient(110deg, #2563eb, #06b6d4); }
+        .btn-green { background: linear-gradient(110deg, #22c55e, #059669); color: #04120a; }
+        .btn-dark { background: #1f2937; border: 1px solid #3b4659; }
+        .btn-red { background: #dc2626; }
+        .full { width: 100%; margin-top: 10px; }
+        .error-text { color: #f87171; font-size: 12px; font-weight: 700; margin: 8px 0 0; }
+        .gallery-toolbar {
+            display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+            gap: 14px; background: #111827; border: 1px solid var(--border);
+            border-radius: 18px; padding: 16px; margin-bottom: 20px;
+            box-shadow: 0 12px 32px #0003;
         }
-
-        .slide.prev {
-            transform: translateX(-35%) scale(0.8) translateZ(-100px);
-            opacity: 0.45;
-            z-index: 5;
-            pointer-events: auto;
-            cursor: pointer;
+        .gallery-title { font-size: 19px; font-weight: 900; margin: 0 0 4px; overflow-wrap: anywhere; }
+        .toolbar-sub { color: var(--muted); font-size: 11px; line-height: 1.6; margin: 0; }
+        .filter-row { display: flex; gap: 6px; padding: 5px; border: 1px solid #263244; background: #090d16; border-radius: 12px; }
+        .filter-btn {
+            border: 0; background: transparent; color: var(--muted); border-radius: 8px;
+            padding: 9px 12px; font-size: 11px; font-weight: 800; white-space: nowrap;
         }
-
-        .slide.next {
-            transform: translateX(35%) scale(0.8) translateZ(-100px);
-            opacity: 0.45;
-            z-index: 5;
-            pointer-events: auto;
-            cursor: pointer;
+        .filter-btn.active { background: var(--blue); color: #fff; }
+        .filter-btn.active.selected-filter { background: #16a34a; }
+        .photo-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 15px; }
+        .photo-card {
+            min-width: 0; overflow: hidden; border: 2px solid #202b3e; border-radius: 15px;
+            background: #111827; transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
         }
-
-        /* Mobile Adjustments */
-        @media (max-width: 768px) {
-            .slider-wrapper { height: 210px; }
-            .slide { width: 82%; height: 100%; }
-            .slide.prev { transform: translateX(-18%) scale(0.85) translateZ(-50px); }
-            .slide.next { transform: translateX(18%) scale(0.85) translateZ(-50px); }
+        .photo-card:hover { transform: translateY(-3px); }
+        .photo-card.selected { border-color: var(--green); box-shadow: 0 0 20px #22c55e2f; }
+        .photo-preview {
+            display: block; width: 100%; aspect-ratio: 4 / 3; border: 0; padding: 0; position: relative;
+            background: #05070c; overflow: hidden;
+        }
+        .photo-preview img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .25s ease; }
+        .photo-preview:hover img { transform: scale(1.04); }
+        .photo-card.selected .photo-preview::after {
+            content: ""; position: absolute; inset: 0; background: #22c55e18; pointer-events: none;
+        }
+        .serial {
+            position: absolute; left: 9px; top: 9px; z-index: 1; background: #000b;
+            border: 1px solid #ffffff25; border-radius: 6px; padding: 3px 7px; color: #fff; font-size: 10px; font-weight: 800;
+        }
+        .check-badge {
+            position: absolute; right: 9px; top: 9px; z-index: 1; width: 29px; height: 29px;
+            border-radius: 50%; display: grid; place-items: center; background: #0009;
+            color: transparent; border: 2px solid #ffffffaa; font-size: 12px;
+        }
+        .photo-card.selected .check-badge { background: var(--green); color: #06200e; border-color: var(--green); }
+        .photo-footer { display: flex; align-items: center; justify-content: space-between; gap: 7px; padding: 9px 10px; background: #0d1322; }
+        .photo-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 10px; font-weight: 700; color: #d1d5db; }
+        .zoom-btn { flex: 0 0 auto; border: 0; border-radius: 7px; color: #9ca3af; background: #1f2937; width: 29px; height: 28px; }
+        .zoom-btn:hover { color: var(--yellow); }
+        .empty-grid { grid-column: 1 / -1; padding: 55px 16px; text-align: center; border: 1px dashed #374151; border-radius: 15px; color: var(--muted); }
+        .bottom-bar {
+            position: fixed; z-index: 30; left: 0; right: 0; bottom: 0;
+            background: #0b101ef5; border-top: 1px solid #283548; backdrop-filter: blur(14px);
+            padding: 12px 18px; box-shadow: 0 -10px 35px #0007;
+        }
+        .bottom-inner {
+            max-width: 1440px; margin: auto; display: flex; align-items: center;
+            justify-content: space-between; gap: 15px; flex-wrap: wrap;
+        }
+        .counter { display: flex; align-items: center; gap: 12px; }
+        .counter-icon { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 12px; color: var(--green); background: #22c55e17; border: 1px solid #22c55e45; }
+        .counter-label { font-size: 10px; color: var(--muted); text-transform: uppercase; font-weight: 800; letter-spacing: .6px; }
+        .counter-number { font-size: 19px; font-weight: 900; margin-top: 1px; }
+        .counter-number span:first-child { color: var(--green); }
+        .sync-status { color: #9ca3af; font-size: 10px; font-weight: 700; margin-top: 4px; }
+        .sync-status.ok { color: #4ade80; }
+        .sync-status.error { color: #f87171; }
+        .action-row { display: flex; gap: 8px; flex-wrap: wrap; }
+        .modal {
+            position: fixed; inset: 0; z-index: 50; background: #000f; display: flex;
+            flex-direction: column; justify-content: space-between; padding: 16px;
+        }
+        .modal-head, .modal-foot { width: 100%; max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+        .modal-name { color: var(--yellow); font-size: 13px; font-weight: 800; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .modal-body { flex: 1; min-height: 0; display: grid; place-items: center; padding: 14px 0; }
+        .modal-body img { max-width: 100%; max-height: 73vh; object-fit: contain; border-radius: 8px; }
+        @media (max-width: 1100px) { .photo-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+        @media (max-width: 800px) {
+            .photo-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+            .topbar { padding: 11px 12px; }
+            .event-meta { display: none; }
+            main { padding: 16px 12px 155px; }
+            .gallery-toolbar { padding: 12px; align-items: flex-start; }
+            .gallery-title { font-size: 16px; }
+            .filter-row { width: 100%; }
+            .filter-btn { flex: 1; }
+            .bottom-bar { padding: 10px 12px; }
+            .bottom-inner { gap: 10px; }
+            .btn { padding: 10px 12px; font-size: 11px; }
+        }
+        @media (max-width: 480px) {
+            .photo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+            .brand-title { font-size: 15px; }
+            .brand-subtitle { font-size: 8px; letter-spacing: 1px; }
+            .state-card { padding: 24px 17px; }
+            .action-row { width: 100%; }
+            .action-row .btn { flex: 1; }
+            .counter-icon { width: 36px; height: 36px; }
+            .counter-number { font-size: 16px; }
+            .counter-label { font-size: 9px; }
+            .photo-name { font-size: 9px; }
         }
     </style>
 </head>
-<body class="antialiased relative" oncontextmenu="return false;">
-
-    <!-- Golden Shooting Lasers Overlay Canvas (Like Reference Image) -->
-    <canvas id="goldenOverlayCanvas"></canvas>
-
-    <!-- 1. Responsive Header & Navigation -->
-    <header class="w-full bg-[#070b14]/90 backdrop-blur-md border-b border-gray-800/80 sticky top-0 z-50 py-3">
-        <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
-            <!-- Logo with icon.png -->
-            <a href="#" class="flex items-center gap-3">
-                <img src="icon.png" alt="AlbumStudio PRO Logo" class="w-10 h-10 md:w-11 md:h-11 rounded-xl object-contain shadow-[0_0_15px_rgba(250,204,21,0.4)] border border-gold/40 bg-black p-0.5" onerror="this.outerHTML='<div class=\'w-10 h-10 bg-gold rounded-lg text-black flex items-center justify-center font-black text-lg\'><i class=\'fa-solid fa-crown\'></i></div>'">
+<body oncontextmenu="return false" ondragstart="return false">
+    <header class="topbar">
+        <div class="topbar-inner">
+            <div class="brand">
+                <div class="brand-mark"><i class="fa-solid fa-camera-retro"></i></div>
                 <div>
-                    <h1 class="text-xl md:text-2xl font-black tracking-wider leading-none">ALBUM<span class="text-gold">STUDIO</span> <span class="text-xs bg-red-600 text-white px-1.5 py-0.5 rounded font-bold align-middle">PRO</span></h1>
-                    <p class="text-[10px] text-gray-400 tracking-widest uppercase mt-0.5">Official Store • SSL Secured <i class="fa-solid fa-lock text-green-400"></i></p>
+                    <div class="brand-title">ALBUM<span>STUDIO</span> <span style="font-size:9px;color:#fff;background:#2563eb;padding:3px 5px;border-radius:4px;vertical-align:middle;">CLOUD</span></div>
+                    <div class="brand-subtitle">VIP Photo Selection Portal</div>
                 </div>
-            </a>
-            
-            <!-- Desktop Nav Links -->
-            <nav class="hidden lg:flex gap-6 font-semibold text-sm">
-                <a href="#" class="text-gold hover:text-white transition"><i class="fa-solid fa-home mr-1"></i> HOME</a>
-                <a href="#software" class="hover:text-gold transition"><i class="fa-solid fa-compact-disc mr-1"></i> SOFTWARE</a>
-                <a href="#videos" class="hover:text-gold transition"><i class="fa-solid fa-circle-play mr-1"></i> DEMO VIDEOS</a>
-                <a href="#previews" class="hover:text-gold transition"><i class="fa-solid fa-images mr-1"></i> PREVIEWS</a>
-            </nav>
-
-            <!-- Search & Support (Desktop) -->
-            <div class="hidden md:flex items-center gap-3">
-                <div class="flex items-center gap-1.5 bg-green-950/40 border border-green-700/50 px-3 py-1.5 rounded-full text-xs text-green-400 font-semibold">
-                    <i class="fa-solid fa-shield-check"></i> 100% Verified
-                </div>
-                <a href="https://wa.me/916296085132" target="_blank" class="border border-gray-700 hover:border-gold px-4 py-2 rounded-full text-xs md:text-sm font-semibold transition flex items-center gap-2 bg-[#111726]">
-                    <i class="fa-brands fa-whatsapp text-green-400 text-base"></i> Support
-                </a>
             </div>
-
-            <!-- Mobile Menu Button -->
-            <button onclick="toggleMobileMenu()" class="lg:hidden text-gray-300 hover:text-gold text-2xl focus:outline-none">
-                <i class="fa-solid fa-bars"></i>
-            </button>
-        </div>
-
-        <!-- Mobile Dropdown Menu -->
-        <div id="mobileMenu" class="hidden lg:hidden bg-[#0d121f] border-b border-gray-800 px-4 pt-3 pb-5 space-y-3">
-            <a href="#" class="block text-gold font-semibold text-sm py-1"><i class="fa-solid fa-home mr-2"></i> HOME</a>
-            <a href="#software" onclick="toggleMobileMenu()" class="block text-gray-300 hover:text-gold font-semibold text-sm py-1"><i class="fa-solid fa-compact-disc mr-2"></i> BUY SOFTWARE</a>
-            <a href="#videos" onclick="toggleMobileMenu()" class="block text-gray-300 hover:text-gold font-semibold text-sm py-1"><i class="fa-solid fa-circle-play mr-2"></i> DEMO VIDEOS</a>
-            <a href="#previews" onclick="toggleMobileMenu()" class="block text-gray-300 hover:text-gold font-semibold text-sm py-1"><i class="fa-solid fa-images mr-2"></i> PREVIEWS</a>
+            <div id="headerEventBadge" class="event-meta hidden">
+                <span>Event: <strong id="topEventName">-</strong></span>
+                <span>Expires: <strong id="topExpiry" style="color:#f87171;">-</strong></span>
+            </div>
         </div>
     </header>
 
-    <!-- 2. Hero Hoarding Banner Section -->
-    <section class="w-full relative bg-[#070b14] z-10">
-        <div class="w-full max-w-7xl mx-auto h-[200px] sm:h-[320px] md:h-[460px] relative overflow-hidden md:rounded-b-3xl shadow-[0_10px_40px_rgba(0,0,0,0.8)] border-b border-gray-800">
-            <img src="AlbumStudioPRO.png" alt="Main Hoarding Banner" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/1200x500/151a28/facc15?text=ALBUMSTUDIO+PRO+MAIN+BANNER'">
-        </div>
+    <main>
+        <section id="loadingScreen" class="center-state">
+            <div class="state-card">
+                <div class="spin"></div>
+                <h2>Connecting to Secure Studio Cloud</h2>
+                <p class="muted small">Please wait while we verify your gallery link.</p>
+            </div>
+        </section>
 
-        <!-- Category Quick Boxes -->
-        <div class="max-w-5xl mx-auto px-4 -mt-6 md:-mt-12 relative z-20 grid grid-cols-3 sm:grid-cols-5 gap-2.5 md:gap-4">
-            <div class="cat-btn bg-dark-card border border-gray-700/80 rounded-xl md:rounded-2xl p-3 md:p-4 flex flex-col items-center justify-center h-20 md:h-28 transition cursor-pointer">
-                <i class="fa-solid fa-wand-magic-sparkles text-gold text-xl md:text-3xl mb-1.5"></i>
-                <span class="text-[10px] md:text-xs font-bold uppercase text-center">Auto Design</span>
+        <section id="errorScreen" class="center-state hidden">
+            <div class="state-card">
+                <div class="state-icon" style="color:#f87171;border-color:#f8717140;background:#ef444414;"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <h2>Link Unavailable</h2>
+                <p id="errorMsgText" class="muted small">This selection link has expired or does not exist.</p>
+                <a class="btn btn-dark full" href="https://albumstudiopro.in" style="text-decoration:none;">Back to Official Website</a>
             </div>
-            <div class="cat-btn bg-dark-card border border-gray-700/80 rounded-xl md:rounded-2xl p-3 md:p-4 flex flex-col items-center justify-center h-20 md:h-28 transition cursor-pointer">
-                <i class="fa-solid fa-layer-group text-gold text-xl md:text-3xl mb-1.5"></i>
-                <span class="text-[10px] md:text-xs font-bold uppercase text-center">PSD Ready</span>
+        </section>
+
+        <section id="pinScreen" class="center-state hidden">
+            <div class="state-card">
+                <div class="state-icon"><i class="fa-solid fa-lock"></i></div>
+                <div style="font-size:10px;font-weight:900;letter-spacing:1px;color:var(--yellow);margin-bottom:8px;">PRIVATE CLIENT GALLERY</div>
+                <h2 id="pinCustomerTitle">Welcome</h2>
+                <p class="muted small">Enter your 4-digit Secret Access PIN to view and select your event photos.</p>
+                <input id="pinInput" class="pin-input" type="password" inputmode="numeric" autocomplete="one-time-code" maxlength="4" placeholder="••••" aria-label="Four digit PIN">
+                <p id="pinErrorMsg" class="error-text hidden" role="alert">Invalid PIN. Please try again.</p>
+                <button id="unlockBtn" class="btn btn-primary full" type="button"><i class="fa-solid fa-unlock-keyhole"></i> Unlock Photo Gallery</button>
             </div>
-            <div class="cat-btn bg-dark-card border border-gold rounded-xl md:rounded-2xl p-3 md:p-4 flex flex-col items-center justify-center h-20 md:h-28 transition cursor-pointer shadow-[0_0_20px_rgba(250,204,21,0.25)]">
-                <i class="fa-solid fa-compact-disc text-gold text-xl md:text-3xl mb-1.5 animate-spin" style="animation-duration: 6s;"></i>
-                <span class="text-[10px] md:text-xs font-bold uppercase text-gold text-center">Software</span>
+        </section>
+
+        <section id="galleryScreen" class="hidden">
+            <div class="gallery-toolbar">
+                <div>
+                    <h1 id="galleryEventTitle" class="gallery-title">Event Gallery</h1>
+                    <p class="toolbar-sub">Select your favorite photos for album design. Tap a photo to select or deselect it.</p>
+                </div>
+                <div class="filter-row">
+                    <button id="filterAllBtn" class="filter-btn active" type="button">All Photos (<span id="countAll">0</span>)</button>
+                    <button id="filterSelBtn" class="filter-btn" type="button">Selected (<span id="countSelectedTab">0</span>)</button>
+                </div>
             </div>
-            <div class="cat-btn bg-dark-card border border-gray-700/80 rounded-xl md:rounded-2xl p-3 md:p-4 flex flex-col items-center justify-center h-20 md:h-28 transition cursor-pointer hidden sm:flex">
-                <i class="fa-solid fa-id-badge text-gold text-xl md:text-3xl mb-1.5"></i>
-                <span class="text-[10px] md:text-xs font-bold uppercase text-center">Passport Pro</span>
+            <div id="photosGrid" class="photo-grid"></div>
+        </section>
+    </main>
+
+    <section id="bottomActionBar" class="bottom-bar hidden">
+        <div class="bottom-inner">
+            <div class="counter">
+                <div class="counter-icon"><i class="fa-solid fa-check-double"></i></div>
+                <div>
+                    <div class="counter-label">Selected Photos</div>
+                    <div class="counter-number"><span id="selectedCountText">0</span> / <span id="maxLimitText">100</span></div>
+                    <div id="syncStatus" class="sync-status">Selections sync to studio cloud.</div>
+                </div>
             </div>
-            <div class="cat-btn bg-dark-card border border-gray-700/80 rounded-xl md:rounded-2xl p-3 md:p-4 flex flex-col items-center justify-center h-20 md:h-28 transition cursor-pointer hidden sm:flex">
-                <i class="fa-solid fa-headset text-gold text-xl md:text-3xl mb-1.5"></i>
-                <span class="text-[10px] md:text-xs font-bold uppercase text-center">VIP Support</span>
+            <div class="action-row">
+                <button id="copyListBtn" class="btn btn-dark" type="button"><i class="fa-regular fa-copy"></i> Copy List</button>
+                <button id="submitBtn" class="btn btn-green" type="button"><i class="fa-brands fa-whatsapp"></i> Submit Selection</button>
             </div>
         </div>
     </section>
 
-    <!-- 3. Software Product Section (Dynamic Plan & Price Selector) -->
-    <section id="software" class="w-full max-w-6xl mx-auto px-4 py-10 md:py-16 mt-2 md:mt-6 relative z-10">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-[#0d121f]/95 backdrop-blur-sm border border-gray-800 rounded-2xl md:rounded-3xl p-5 sm:p-8 md:p-10 shadow-[0_20px_60px_rgba(0,0,0,0.8)]">
-            
-            <!-- Left: Software Box Image (100% Fitted inside border with hover zoom) -->
-            <div class="lg:col-span-5 relative w-full rounded-2xl overflow-hidden border border-gray-700/80 bg-[#0b0f19] shadow-2xl group">
-                <img src="albumsoftwarepoduct.png" alt="AlbumStudio PRO Software Box" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 block pointer-events-auto" onerror="this.src='https://placehold.co/500x550/151a28/facc15?text=AlbumStudio+PRO+Box'">
-            </div>
-
-            <!-- Right: Product Details & Dynamic Pricing -->
-            <div class="lg:col-span-7 flex flex-col justify-center">
-                <div class="flex flex-wrap items-center gap-2 mb-3">
-                    <span class="bg-blue-500/10 border border-blue-500/30 text-blue-400 text-xs font-bold px-3 py-1 rounded-full">
-                        ✨ 2026 AI POWERED EDITION
-                    </span>
-                    <span class="bg-green-500/10 border border-green-500/30 text-green-400 text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
-                        <i class="fa-solid fa-lock"></i> ⭐ Trusted by 500+ Studios
-                    </span>
-                </div>
-
-                <h2 class="text-2xl sm:text-4xl md:text-5xl font-black mb-2 leading-tight">AlbumStudio PRO <span class="text-gold">Software</span></h2>
-                <p class="text-gray-400 text-xs sm:text-sm md:text-base mb-5">Transform your wedding photos into ready-to-print 12x36 albums in 1 minute with automatic templates, color correction & drag-and-drop tools.</p>
-                
-                <!-- Dynamic Price Display + Monthly Calculation Badge -->
-                <div class="flex flex-wrap items-end gap-3 md:gap-4 mb-2">
-                    <span id="displayPrice" class="text-4xl sm:text-5xl md:text-6xl font-black text-white">₹999</span>
-                    <div class="flex flex-col pb-1">
-                        <span id="originalPrice" class="text-gray-500 line-through text-base sm:text-lg font-bold">₹1,999</span>
-                        <span id="discountBadge" class="bg-red-600 text-white text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded shadow w-max">🔥 50% OFF</span>
-                    </div>
-
-                    <!-- শুধুমাত্র ১ বছরের প্ল্যানের জন্য মাসিক হিসাব (₹83/মাস) -->
-                    <div id="monthlyCalcBadge" class="mb-1.5 bg-gradient-to-r from-amber-500/20 to-yellow-500/10 border border-gold/50 text-gold text-xs sm:text-sm font-extrabold px-3 py-1.5 rounded-xl shadow-[0_0_15px_rgba(250,204,21,0.2)] flex items-center gap-1.5 animate-pulse">
-                        <i class="fa-solid fa-calculator"></i> Just ₹83 / month!
-                    </div>
-                </div>
-
-                <p id="planDesc" class="text-gold text-xs sm:text-sm font-medium mb-5">Selected: 1 Year Subscription – All Features Unlocked</p>
-
-                <!-- Plan Selector Options (Above Buy Now) -->
-                <div class="mb-6">
-                    <label class="block text-xs uppercase tracking-wider text-gray-400 font-bold mb-2.5">Select Your Subscription Plan:</label>
-                    <div class="grid grid-cols-3 gap-2.5 sm:gap-3">
-                        
-                        <!-- Option 1: Trial -->
-                        <button type="button" onclick="selectPlan('Trial Plan', 199, 499, '60% OFF', 'Trial Plan – Test all pro features')" id="btn-trial" class="plan-btn border border-gray-700 bg-[#13192a] rounded-xl p-2.5 sm:p-3.5 text-center cursor-pointer flex flex-col items-center justify-center relative">
-                            <span class="text-[11px] sm:text-xs text-gray-400 font-semibold">Trial Version</span>
-                            <span class="text-base sm:text-2xl font-black text-white mt-0.5">₹199</span>
-                            <span class="text-[9px] text-gray-500 mt-0.5">Starter Pack</span>
-                        </button>
-
-                        <!-- Option 2: 1 Year (Default Active with Monthly Rate) -->
-                        <button type="button" onclick="selectPlan('1 Year Subscription', 999, 1999, '50% OFF', '1 Year Subscription – All Features Unlocked')" id="btn-yearly" class="plan-btn active border-2 border-blue-500 bg-[#13192a] rounded-xl p-2.5 sm:p-3.5 text-center cursor-pointer flex flex-col items-center justify-center relative">
-                            <span class="absolute -top-2.5 bg-gradient-to-r from-red-600 to-orange-500 text-white text-[9px] font-bold px-2.5 py-0.5 rounded-full uppercase shadow">Most Popular</span>
-                            <span class="text-[11px] sm:text-xs text-blue-300 font-semibold">1 Year Plan</span>
-                            <span class="text-base sm:text-2xl font-black text-white mt-0.5">₹999</span>
-                            <span class="text-[10px] text-gold font-bold mt-0.5 bg-black/40 px-2 py-0.5 rounded-full">Just ₹83 / month!</span>
-                        </button>
-
-                        <!-- Option 3: Lifetime -->
-                        <button type="button" onclick="selectPlan('Lifetime Access', 2999, 5999, '50% OFF', 'Lifetime Access – One time payment, forever yours')" id="btn-lifetime" class="plan-btn border border-gray-700 bg-[#13192a] rounded-xl p-2.5 sm:p-3.5 text-center cursor-pointer flex flex-col items-center justify-center relative">
-                            <span class="text-[11px] sm:text-xs text-gold font-semibold">Lifetime</span>
-                            <span class="text-base sm:text-2xl font-black text-white mt-0.5">₹2999</span>
-                            <span class="text-[9px] text-gray-400 mt-0.5">One-Time Pay</span>
-                        </button>
-
-                    </div>
-                </div>
-
-                <!-- Buy Now Button (Dynamic WhatsApp Link) -->
-                <a id="buyNowBtn" href="https://wa.me/916296085132?text=Hello,%20I%20want%20to%20buy%20AlbumStudio%20PRO%20-%20*1%20Year%20Subscription*%20(Price:%20%E2%82%B9999%20%7C%20Just%20%E2%82%B983/month).%20Please%20share%20payment%20details." target="_blank" class="glow-btn w-full bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-400 hover:from-blue-500 hover:to-cyan-300 text-white font-black text-lg sm:text-xl py-4 sm:py-5 rounded-xl text-center transition transform hover:-translate-y-0.5 flex items-center justify-center gap-3 mb-5">
-                    <i class="fa-solid fa-cart-shopping"></i> BUY NOW (INSTANT ACCESS)
-                </a>
-
-                <!-- Trust & Instant Access Boxes -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div class="bg-green-950/30 border border-green-800/50 rounded-xl p-3 flex items-center gap-3">
-                        <div class="bg-green-500 text-black rounded-full w-8 h-8 flex items-center justify-center shrink-0 font-bold text-sm">
-                            <i class="fa-solid fa-check"></i>
-                        </div>
-                        <div>
-                            <p class="text-green-400 font-bold text-xs uppercase">Instant Direct Access</p>
-                            <p class="text-gray-400 text-[11px]">Direct Download & Key on WhatsApp</p>
-                        </div>
-                    </div>
-
-                    <div class="bg-yellow-950/20 border border-yellow-700/40 rounded-xl p-3 flex items-center justify-between">
-                        <div>
-                            <p class="text-gold font-bold text-xs uppercase"><i class="fa-solid fa-shield-halved mr-1"></i> Trust Score</p>
-                            <p class="text-gray-400 text-[11px]">Verified Studio Software</p>
-                        </div>
-                        <div class="bg-black/50 px-2.5 py-1 rounded text-gold text-xs font-bold border border-gold/20">
-                            ★★★★★ 5.0
-                        </div>
-                    </div>
-                </div>
-
-            </div>
+    <section id="lightboxModal" class="modal hidden" role="dialog" aria-modal="true" aria-label="Photo preview">
+        <div class="modal-head">
+            <span id="lightboxFileName" class="modal-name">Photo.jpg</span>
+            <button id="closeLightboxBtn" class="btn btn-dark" type="button" aria-label="Close preview"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body"><img id="lightboxImg" src="" alt="Photo preview"></div>
+        <div class="modal-foot" style="justify-content:center;">
+            <button id="lightboxSelectBtn" class="btn btn-green" type="button">Select Photo</button>
         </div>
     </section>
 
-    <!-- 4. YouTube Videos Section -->
-    <section id="videos" class="w-full max-w-6xl mx-auto px-4 py-10 md:py-14 relative z-10">
-        <div class="text-center mb-8 md:mb-10">
-            <h2 class="text-2xl sm:text-3xl font-black text-white"><span class="text-gold">WATCH</span> DEMO VIDEOS</h2>
-            <p class="text-gray-400 text-xs sm:text-sm mt-1">সফটওয়্যারের কাজ ও ব্যবহারবিধি ভিডিওতে দেখুন</p>
-            <div class="w-20 h-1 bg-gold mx-auto mt-3 rounded"></div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-            <!-- Video 1 -->
-            <div class="bg-dark-card p-3 sm:p-4 rounded-2xl border border-gray-800 shadow-xl">
-                <div class="relative w-full aspect-video rounded-xl overflow-hidden bg-black">
-                    <iframe class="w-full h-full" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Demo Video 1" frameborder="0" allowfullscreen></iframe>
-                </div>
-                <h4 class="font-bold text-sm sm:text-base md:text-lg mt-3 text-center text-gray-200">১ ক্লিকে ১২x৩৬ অ্যালবাম ডিজাইন টিউটোরিয়াল</h4>
-            </div>
-
-            <!-- Video 2 -->
-            <div class="bg-dark-card p-3 sm:p-4 rounded-2xl border border-gray-800 shadow-xl">
-                <div class="relative w-full aspect-video rounded-xl overflow-hidden bg-black">
-                    <iframe class="w-full h-full" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Demo Video 2" frameborder="0" allowfullscreen></iframe>
-                </div>
-                <h4 class="font-bold text-sm sm:text-base md:text-lg mt-3 text-center text-gray-200">অটোমেটিক কালার কারেকশন ও পাসপোর্ট মেকার</h4>
-            </div>
-        </div>
-    </section>
-
-    <!-- 5. 3D Coverflow Photo Slider Section -->
-    <section id="previews" class="w-full max-w-6xl mx-auto px-4 py-10 md:py-16 overflow-hidden relative z-10">
-        <div class="text-center mb-4 md:mb-8">
-            <h2 class="text-2xl sm:text-3xl font-black text-white">SOFTWARE <span class="text-gold">PREVIEWS</span></h2>
-            <p class="text-gray-400 text-xs sm:text-sm mt-1">অ্যালবাম ডিজাইন এবং সফটওয়্যারের কিছু ঝলক</p>
-        </div>
-
-        <!-- 3D Slider Container -->
-        <div class="slider-wrapper" id="sliderWrapper">
-            <div class="slide" onclick="goToSlide(0)">
-                <img src="photo1.png" alt="Preview 1" onerror="this.src='https://placehold.co/800x480/151a28/facc15?text=photo1.png'">
-            </div>
-            <div class="slide" onclick="goToSlide(1)">
-                <img src="photo02.png" alt="Preview 2" onerror="this.src='https://placehold.co/800x480/1e293b/ffffff?text=photo02.png'">
-            </div>
-            <div class="slide" onclick="goToSlide(2)">
-                <img src="photo03.png" alt="Preview 3" onerror="this.src='https://placehold.co/800x480/0f172a/facc15?text=photo03.png'">
-            </div>
-            <div class="slide" onclick="goToSlide(3)">
-                <img src="photo04.png" alt="Preview 4" onerror="this.src='https://placehold.co/800x480/334155/ffffff?text=photo04.png'">
-            </div>
-            <div class="slide" onclick="goToSlide(4)">
-                <img src="photo05.png" alt="Preview 5" onerror="this.src='https://placehold.co/800x480/475569/facc15?text=photo05.png'">
-            </div>
-        </div>
-
-        <!-- Slider Controls -->
-        <div class="flex justify-center items-center mt-8">
-            <div class="bg-[#111622] border border-gray-800 rounded-full px-6 py-2.5 flex items-center gap-6 shadow-lg">
-                <button onclick="prevSlide()" class="text-gray-400 hover:text-gold uppercase tracking-widest text-xs font-bold transition">BACK</button>
-                <div class="text-cyan-400 font-bold text-sm tracking-widest"><span id="currentSlideNum">01</span> / 05</div>
-                <button onclick="nextSlide()" class="text-gray-400 hover:text-gold uppercase tracking-widest text-xs font-bold transition">NEXT</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Floating WhatsApp Button -->
-    <a href="https://wa.me/916296085132" target="_blank" class="fixed bottom-5 right-5 z-50 bg-green-500 hover:bg-green-600 text-white w-14 h-14 rounded-full flex items-center justify-center text-3xl shadow-[0_0_25px_rgba(34,197,94,0.7)] transition transform hover:scale-110">
-        <i class="fa-brands fa-whatsapp"></i>
-    </a>
-
-    <!-- Footer -->
-    <footer class="w-full bg-[#05080f] border-t border-gray-800/80 py-8 mt-8 relative z-10">
-        <div class="max-w-7xl mx-auto px-4 text-center text-gray-500 text-xs sm:text-sm font-medium">
-            <div class="flex justify-center items-center gap-2 text-green-400 text-xs font-bold mb-2">
-                <i class="fa-solid fa-lock"></i> SSL SECURED OFFICIAL STORE
-            </div>
-            &copy; 2026 AlbumStudio PRO. All rights reserved.<br>
-            Helpline & WhatsApp Support: <span class="text-gold font-bold">+91 6296085132</span>
-        </div>
-    </footer>
-
-    <!-- Scripts: Plan Selector, Golden Overlay Animation, 3D Slider & Code Protection -->
     <script>
-        // 1. Mobile Menu Toggle
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobileMenu');
-            menu.classList.toggle('hidden');
-        }
+        'use strict';
 
-        // 2. Dynamic Plan Selector & Monthly Calculation Logic
-        const whatsappNumber = "916296085132";
+        // Discourage casual saving/copying from the gallery UI.
+        // This is a deterrent only; it cannot prevent screenshots or direct URL access.
+        document.addEventListener('contextmenu', (event) => {
+            event.preventDefault();
+            return false;
+        }, true);
 
-        function selectPlan(planName, price, origPrice, discountText, description) {
-            document.getElementById('displayPrice').innerText = '₹' + price;
-            document.getElementById('originalPrice').innerText = '₹' + origPrice;
-            document.getElementById('discountBadge').innerText = '🔥 ' + discountText;
-            document.getElementById('planDesc').innerText = 'Selected: ' + description;
-
-            // Show Monthly Calculation ONLY for 1 Year Plan (999)
-            const monthlyBadge = document.getElementById('monthlyCalcBadge');
-            if (price === 999) {
-                monthlyBadge.classList.remove('hidden');
-                monthlyBadge.classList.add('flex');
-            } else {
-                monthlyBadge.classList.add('hidden');
-                monthlyBadge.classList.remove('flex');
+        document.addEventListener('dragstart', (event) => {
+            if (event.target && event.target.closest && event.target.closest('img')) {
+                event.preventDefault();
             }
+        }, true);
 
-            // Update Active Button Border Style
-            const buttons = document.querySelectorAll('.plan-btn');
-            buttons.forEach(btn => {
-                btn.classList.remove('active', 'border-2', 'border-blue-500');
-                btn.classList.add('border', 'border-gray-700');
-            });
+        document.addEventListener('keydown', (event) => {
+            const key = String(event.key || '').toLowerCase();
+            const ctrlOrMeta = event.ctrlKey || event.metaKey;
+            const blockedShortcut =
+                (ctrlOrMeta && ['s', 'u'].includes(key)) ||
+                (ctrlOrMeta && event.shiftKey && ['i', 'j', 'c'].includes(key)) ||
+                key === 'f12';
 
-            if (price === 199) {
-                document.getElementById('btn-trial').classList.add('active', 'border-2', 'border-blue-500');
-            } else if (price === 999) {
-                document.getElementById('btn-yearly').classList.add('active', 'border-2', 'border-blue-500');
-            } else if (price === 2999) {
-                document.getElementById('btn-lifetime').classList.add('active', 'border-2', 'border-blue-500');
+            if (blockedShortcut) {
+                event.preventDefault();
+                event.stopPropagation();
             }
+        }, true);
 
-            // Update WhatsApp Link with Selected Plan Details
-            const extraNote = (price === 999) ? " (Just ₹83/month)" : "";
-            const message = `Hello, I want to buy AlbumStudio PRO - *${planName}* (Price: ₹${price}${extraNote}). Please share payment details.`;
-            const encodedMessage = encodeURIComponent(message);
-            document.getElementById('buyNowBtn').href = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+        const API_URL = 'https://addguru.xyz/albumstudio/upload_selection.php';
+        const urlParams = new URLSearchParams(window.location.search);
+        const sessionId = urlParams.get('session') || urlParams.get('id') || '';
+        const storageKey = `as_sel_${sessionId}`;
+
+        let galleryPhotos = [];
+        let selectedPhotos = new Set();
+        let maxPhotoLimit = 100;
+        let studioWhatsApp = '';
+        let clientEventName = '';
+        let currentFilter = 'all';
+        let currentLightboxPhotoName = null;
+        let verifiedPin = '';
+        let syncTimer = null;
+        let syncQueue = Promise.resolve();
+        let selectionRevision = 0;
+
+        try {
+            const savedNames = JSON.parse(localStorage.getItem(storageKey) || '[]');
+            if (Array.isArray(savedNames)) savedNames.forEach(name => selectedPhotos.add(String(name)));
+        } catch (error) {
+            localStorage.removeItem(storageKey);
         }
 
-        // 3. 3D Coverflow Slider Logic
-        const slides = document.querySelectorAll('.slide');
-        const currentSlideNum = document.getElementById('currentSlideNum');
-        let current = 0;
-        const totalSlides = slides.length;
-        let slideInterval;
+        const $ = (id) => document.getElementById(id);
 
-        function updateSlider() {
-            slides.forEach((slide, index) => {
-                slide.className = 'slide';
-                if (index === current) {
-                    slide.classList.add('active');
-                } else if (index === (current - 1 + totalSlides) % totalSlides) {
-                    slide.classList.add('prev');
-                } else if (index === (current + 1) % totalSlides) {
-                    slide.classList.add('next');
-                }
-            });
-            currentSlideNum.innerText = `0${current + 1}`;
-        }
-
-        function nextSlide() {
-            current = (current + 1) % totalSlides;
-            updateSlider();
-            resetInterval();
-        }
-
-        function prevSlide() {
-            current = (current - 1 + totalSlides) % totalSlides;
-            updateSlider();
-            resetInterval();
-        }
-
-        function goToSlide(index) {
-            current = index;
-            updateSlider();
-            resetInterval();
-        }
-
-        function startInterval() {
-            slideInterval = setInterval(nextSlide, 4000);
-        }
-
-        function resetInterval() {
-            clearInterval(slideInterval);
-            startInterval();
-        }
-
-        updateSlider();
-        startInterval();
-
-        // 4. Golden Shooting Star / Laser Lines Overlay Animation (Like Studio Line Preview)
-        const canvas = document.getElementById('goldenOverlayCanvas');
-        const ctx = canvas.getContext('2d');
-        let width, height;
-
-        function resizeCanvas() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        class GoldenStreak {
-            constructor() {
-                this.reset();
-                this.y = Math.random() * height;
-            }
-            reset() {
-                this.x = Math.random() * width;
-                this.y = -50;
-                this.length = Math.random() * 90 + 40;
-                this.speed = Math.random() * 2.5 + 1;
-                // Diagonal angles
-                this.angle = (Math.random() > 0.5 ? 1 : -1) * (Math.PI / 4 + (Math.random() * 0.2 - 0.1));
-                this.opacity = Math.random() * 0.55 + 0.15;
-                this.lineWidth = Math.random() * 1.5 + 0.5;
-            }
-            update() {
-                this.x += Math.sin(this.angle) * this.speed;
-                this.y += Math.cos(this.angle) * this.speed;
-
-                if (this.y > height + 100 || this.x < -100 || this.x > width + 100) {
-                    this.reset();
-                }
-            }
-            draw() {
-                const tailX = this.x - Math.sin(this.angle) * this.length;
-                const tailY = this.y - Math.cos(this.angle) * this.length;
-
-                const grad = ctx.createLinearGradient(this.x, this.y, tailX, tailY);
-                grad.addColorStop(0, `rgba(250, 204, 21, ${this.opacity})`);
-                grad.addColorStop(0.4, `rgba(234, 179, 8, ${this.opacity * 0.4})`);
-                grad.addColorStop(1, 'rgba(250, 204, 21, 0)');
-
-                ctx.beginPath();
-                ctx.moveTo(this.x, this.y);
-                ctx.lineTo(tailX, tailY);
-                ctx.strokeStyle = grad;
-                ctx.lineWidth = this.lineWidth;
-                ctx.stroke();
-
-                // Glowing head tip
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.lineWidth * 1.3, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(254, 240, 138, ${this.opacity + 0.2})`;
-                ctx.fill();
-            }
-        }
-
-        const streaks = Array.from({ length: 38 }, () => new GoldenStreak());
-
-        function animateOverlay() {
-            ctx.clearRect(0, 0, width, height);
-            streaks.forEach(s => {
-                s.update();
-                s.draw();
-            });
-            requestAnimationFrame(animateOverlay);
-        }
-        animateOverlay();
-
-        // 5. Strict Anti-Copy & DevTools Protection
-        document.addEventListener('contextmenu', event => event.preventDefault());
-        document.addEventListener('keydown', function(e) {
-            // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C, Ctrl+U, Ctrl+S
-            if (
-                e.key === 'F12' ||
-                (e.ctrlKey && e.shiftKey && ['I', 'i', 'J', 'j', 'C', 'c'].includes(e.key)) ||
-                (e.ctrlKey && ['U', 'u', 'S', 's'].includes(e.key))
-            ) {
-                e.preventDefault();
-                return false;
+        window.addEventListener('DOMContentLoaded', checkSessionStatus);
+        $('unlockBtn').addEventListener('click', verifyPinAndLoad);
+        $('pinInput').addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') verifyPinAndLoad();
+            if (event.key.length === 1 && !/^\d$/.test(event.key)) {
+                event.preventDefault();
             }
         });
-    </script>
+        $('filterAllBtn').addEventListener('click', () => filterGallery('all'));
+        $('filterSelBtn').addEventListener('click', () => filterGallery('selected'));
+        $('copyListBtn').addEventListener('click', copySelectionList);
+        $('submitBtn').addEventListener('click', submitViaWhatsApp);
+        $('closeLightboxBtn').addEventListener('click', closeLightbox);
+        $('lightboxSelectBtn').addEventListener('click', toggleSelectFromLightbox);
+        $('lightboxModal').addEventListener('click', (event) => {
+            if (event.target === $('lightboxModal')) closeLightbox();
+        });
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') closeLightbox();
+        });
 
+        async function apiGet(params) {
+            const response = await fetch(`${API_URL}?${params.toString()}`, {
+                method: 'GET',
+                cache: 'no-store'
+            });
+
+            let data;
+            try {
+                data = await response.json();
+            } catch (error) {
+                throw new Error(`The cloud server returned an invalid response (HTTP ${response.status}).`);
+            }
+
+            return { response, data };
+        }
+
+        async function checkSessionStatus() {
+            if (!sessionId) {
+                showError('No session ID was found in this URL. Please use the complete link provided by your studio.');
+                return;
+            }
+
+            try {
+                const params = new URLSearchParams({ session: sessionId });
+                const { data } = await apiGet(params);
+                $('loadingScreen').classList.add('hidden');
+
+                if (data.status === 'pin_required') {
+                    clientEventName = data.customer_name || 'Valued Client';
+                    $('pinCustomerTitle').textContent = clientEventName;
+                    $('pinScreen').classList.remove('hidden');
+                    $('pinInput').focus();
+                } else if (data.status === 'error') {
+                    showError(data.message || 'This selection link has expired or does not exist.');
+                } else if (data.status === 'success') {
+                    $('pinScreen').classList.remove('hidden');
+                    $('pinCustomerTitle').textContent = 'Enter Your Access PIN';
+                } else {
+                    showError('The cloud server returned an unexpected response.');
+                }
+            } catch (error) {
+                showError('Unable to connect to the cloud server. Check the internet connection or try again later.');
+                console.error('Session check failed:', error);
+            }
+        }
+
+        async function verifyPinAndLoad() {
+            const pin = $('pinInput').value.trim();
+            const errorElement = $('pinErrorMsg');
+            const button = $('unlockBtn');
+
+            if (!/^\d{4}$/.test(pin)) {
+                errorElement.textContent = 'Please enter the 4-digit Secret Access PIN.';
+                errorElement.classList.remove('hidden');
+                return;
+            }
+
+            errorElement.classList.add('hidden');
+            button.disabled = true;
+            button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Verifying PIN...';
+
+            try {
+                const params = new URLSearchParams({ session: sessionId, pin });
+                const { data } = await apiGet(params);
+
+                if (data.status !== 'success') {
+                    errorElement.textContent = data.message || 'Invalid PIN. Please try again.';
+                    errorElement.classList.remove('hidden');
+                    return;
+                }
+
+                verifiedPin = pin;
+                clientEventName = String(data.customer_name || 'Client');
+                studioWhatsApp = String(data.studio_phone || '').replace(/\D/g, '');
+                maxPhotoLimit = Math.max(1, Number.parseInt(data.max_limit, 10) || 100);
+                galleryPhotos = Array.isArray(data.photos) ? data.photos.filter(photo => photo && photo.name && photo.url) : [];
+
+                const allowedNames = new Set(galleryPhotos.map(photo => String(photo.name)));
+                const localNames = Array.from(selectedPhotos).filter(name => allowedNames.has(name));
+                const serverSelection = data.selection && Array.isArray(data.selection.selected_names)
+                    ? data.selection.selected_names.map(String).filter(name => allowedNames.has(name))
+                    : [];
+                const serverHasSavedState = Boolean(data.selection && ['in_progress', 'submitted'].includes(data.selection.status));
+                selectedPhotos = new Set((serverHasSavedState ? serverSelection : localNames).slice(0, maxPhotoLimit));
+                saveSelection();
+
+                $('topEventName').textContent = clientEventName;
+                $('topExpiry').textContent = data.expires_date || '-';
+                $('headerEventBadge').classList.remove('hidden');
+                $('galleryEventTitle').textContent = `${clientEventName} (${galleryPhotos.length} Photos)`;
+                $('maxLimitText').textContent = String(maxPhotoLimit);
+                $('countAll').textContent = String(galleryPhotos.length);
+
+                $('pinScreen').classList.add('hidden');
+                $('galleryScreen').classList.remove('hidden');
+                $('bottomActionBar').classList.remove('hidden');
+
+                renderPhotosGrid();
+                updateCounterUI();
+                if (selectedPhotos.size > 0 && !serverHasSavedState) {
+                    scheduleSelectionSync();
+                } else if (serverHasSavedState) {
+                    setSyncStatus(data.selection.status === 'submitted' ? 'Your submitted selection is saved to the studio.' : 'Your selection is synced to the studio.', 'ok');
+                } else {
+                    setSyncStatus('Selections sync to studio cloud.', '');
+                }
+            } catch (error) {
+                errorElement.textContent = error.message || 'Network error. Please try again.';
+                errorElement.classList.remove('hidden');
+                console.error('Gallery load failed:', error);
+            } finally {
+                button.disabled = false;
+                button.innerHTML = '<i class="fa-solid fa-unlock-keyhole"></i> Unlock Photo Gallery';
+            }
+        }
+
+        function renderPhotosGrid() {
+            const grid = $('photosGrid');
+            grid.replaceChildren();
+
+            const photosToRender = currentFilter === 'selected'
+                ? galleryPhotos.filter(photo => selectedPhotos.has(String(photo.name)))
+                : galleryPhotos;
+
+            if (photosToRender.length === 0) {
+                const empty = document.createElement('div');
+                empty.className = 'empty-grid';
+                empty.textContent = currentFilter === 'selected'
+                    ? 'No photos selected yet. Choose photos from the All Photos tab.'
+                    : 'No photos are available in this gallery.';
+                grid.appendChild(empty);
+                return;
+            }
+
+            photosToRender.forEach((photo) => {
+                const name = String(photo.name);
+                const selected = selectedPhotos.has(name);
+                const card = document.createElement('article');
+                card.className = `photo-card${selected ? ' selected' : ''}`;
+
+                const previewButton = document.createElement('button');
+                previewButton.className = 'photo-preview';
+                previewButton.type = 'button';
+                previewButton.setAttribute('aria-label', `Preview ${name}`);
+                previewButton.addEventListener('click', () => togglePhotoSelection(name));
+
+                const image = document.createElement('img');
+                image.src = String(photo.url);
+                image.alt = name;
+                image.loading = 'lazy';
+                image.decoding = 'async';
+                image.addEventListener('error', () => {
+                    image.style.opacity = '0.2';
+                    previewButton.title = 'This image could not be loaded. Check the server photo URL.';
+                });
+                previewButton.appendChild(image);
+
+                const serial = document.createElement('span');
+                serial.className = 'serial';
+                serial.textContent = `#${galleryPhotos.findIndex(item => item.name === photo.name) + 1}`;
+                previewButton.appendChild(serial);
+
+                const check = document.createElement('span');
+                check.className = 'check-badge';
+                check.innerHTML = '<i class="fa-solid fa-check"></i>';
+                previewButton.appendChild(check);
+
+                const footer = document.createElement('div');
+                footer.className = 'photo-footer';
+
+                const filename = document.createElement('span');
+                filename.className = 'photo-name';
+                filename.title = name;
+                filename.textContent = name;
+                filename.addEventListener('click', () => togglePhotoSelection(name));
+
+                const zoomButton = document.createElement('button');
+                zoomButton.type = 'button';
+                zoomButton.className = 'zoom-btn';
+                zoomButton.title = 'Preview full photo';
+                zoomButton.setAttribute('aria-label', `Preview ${name}`);
+                zoomButton.innerHTML = '<i class="fa-solid fa-expand"></i>';
+                zoomButton.addEventListener('click', () => openLightbox(photo));
+
+                footer.append(filename, zoomButton);
+                card.append(previewButton, footer);
+                grid.appendChild(card);
+            });
+        }
+
+        function togglePhotoSelection(fileName) {
+            if (selectedPhotos.has(fileName)) {
+                selectedPhotos.delete(fileName);
+            } else {
+                if (selectedPhotos.size >= maxPhotoLimit) {
+                    alert(`Selection limit reached. You can choose up to ${maxPhotoLimit} photos.`);
+                    return;
+                }
+                selectedPhotos.add(fileName);
+            }
+
+            saveSelection();
+            renderPhotosGrid();
+            updateCounterUI();
+            updateLightboxButton();
+            scheduleSelectionSync();
+        }
+
+        function saveSelection() {
+            try {
+                localStorage.setItem(storageKey, JSON.stringify(Array.from(selectedPhotos)));
+            } catch (error) {
+                console.warn('Could not save selection in this browser:', error);
+            }
+        }
+
+        function updateCounterUI() {
+            $('selectedCountText').textContent = String(selectedPhotos.size);
+            $('countSelectedTab').textContent = String(selectedPhotos.size);
+        }
+
+        function filterGallery(mode) {
+            currentFilter = mode;
+
+            $('filterAllBtn').classList.toggle('active', mode === 'all');
+            $('filterSelBtn').classList.toggle('active', mode === 'selected');
+            $('filterSelBtn').classList.toggle('selected-filter', mode === 'selected');
+
+            renderPhotosGrid();
+        }
+
+        function openLightbox(photo) {
+            currentLightboxPhotoName = String(photo.name);
+            $('lightboxFileName').textContent = currentLightboxPhotoName;
+            $('lightboxImg').src = String(photo.url);
+            $('lightboxImg').alt = currentLightboxPhotoName;
+            updateLightboxButton();
+            $('lightboxModal').classList.remove('hidden');
+        }
+
+        function closeLightbox() {
+            $('lightboxModal').classList.add('hidden');
+            $('lightboxImg').src = '';
+            currentLightboxPhotoName = null;
+        }
+
+        function toggleSelectFromLightbox() {
+            if (!currentLightboxPhotoName) return;
+            togglePhotoSelection(currentLightboxPhotoName);
+            updateLightboxButton();
+        }
+
+        function updateLightboxButton() {
+            const button = $('lightboxSelectBtn');
+            if (!currentLightboxPhotoName) return;
+
+            const isSelected = selectedPhotos.has(currentLightboxPhotoName);
+            button.className = `btn ${isSelected ? 'btn-red' : 'btn-green'}`;
+            button.innerHTML = isSelected
+                ? '<i class="fa-solid fa-xmark"></i> Remove Selection'
+                : '<i class="fa-solid fa-check"></i> Select This Photo';
+        }
+
+        function generateFormattedList() {
+            const chosen = Array.from(selectedPhotos);
+            return [
+                'FINAL PHOTO SELECTION',
+                '----------------------------------',
+                `Event: ${clientEventName}`,
+                `Selected: ${chosen.length} / ${maxPhotoLimit} Photos`,
+                `Session: ${sessionId}`,
+                '----------------------------------',
+                'Selected File Names:',
+                ...chosen.map((name, index) => `${index + 1}. ${name}`)
+            ].join('\n');
+        }
+
+        async function copySelectionList() {
+            if (selectedPhotos.size === 0) {
+                alert('Please select at least one photo first.');
+                return;
+            }
+
+            const text = generateFormattedList();
+            try {
+                await navigator.clipboard.writeText(text);
+                alert(`Copied ${selectedPhotos.size} selected photo names.`);
+            } catch (error) {
+                const helper = document.createElement('textarea');
+                helper.value = text;
+                helper.style.position = 'fixed';
+                helper.style.opacity = '0';
+                document.body.appendChild(helper);
+                helper.select();
+                const copied = document.execCommand('copy');
+                helper.remove();
+                alert(copied ? 'Selection list copied.' : 'Could not copy automatically. Please select and copy the list manually.');
+            }
+        }
+
+        function setSyncStatus(message, state) {
+            const element = $('syncStatus');
+            if (!element) return;
+            element.textContent = message;
+            element.className = `sync-status${state ? ` ${state}` : ''}`;
+        }
+
+        async function postSelection(action, names) {
+            if (!verifiedPin || !sessionId) throw new Error('The gallery PIN verification is missing. Unlock the gallery again.');
+            const formData = new FormData();
+            formData.append('action', action);
+            formData.append('session_id', sessionId);
+            formData.append('pin', verifiedPin);
+            formData.append('selected_names', JSON.stringify(names));
+
+            const response = await fetch(API_URL, { method: 'POST', body: formData, cache: 'no-store' });
+            let data;
+            try { data = await response.json(); }
+            catch (error) { throw new Error(`The studio server returned an invalid response (HTTP ${response.status}).`); }
+            if (!response.ok || data.status !== 'success') throw new Error(data.message || `Could not save selection (HTTP ${response.status}).`);
+            return data;
+        }
+
+        function scheduleSelectionSync() {
+            if (!verifiedPin) return;
+            const snapshot = Array.from(selectedPhotos);
+            const revision = ++selectionRevision;
+            if (syncTimer) clearTimeout(syncTimer);
+            setSyncStatus('Saving selection to studio cloud...', '');
+            syncTimer = setTimeout(() => {
+                syncTimer = null;
+                syncQueue = syncQueue.catch(() => {}).then(() => postSelection('save_selection', snapshot));
+                syncQueue.then((result) => {
+                    if (revision === selectionRevision) {
+                        const count = Number(result.selected_count || 0);
+                        setSyncStatus(`${count} selected photo(s) saved to studio cloud.`, 'ok');
+                    }
+                }).catch((error) => {
+                    if (revision === selectionRevision) setSyncStatus('Online save failed. Keep this page open and retry Submit Selection.', 'error');
+                    console.error('Selection sync failed:', error);
+                });
+            }, 450);
+        }
+
+        async function submitViaWhatsApp() {
+            if (selectedPhotos.size === 0) {
+                alert('Please select at least one photo before submitting.');
+                return;
+            }
+            if (!studioWhatsApp) {
+                alert('The studio WhatsApp number is not available. Please contact your studio.');
+                return;
+            }
+
+            const whatsappUrl = `https://wa.me/${studioWhatsApp}?text=${encodeURIComponent(generateFormattedList())}`;
+            const whatsappWindow = window.open('about:blank', '_blank');
+            const button = $('submitBtn');
+            const namesSnapshot = Array.from(selectedPhotos);
+            const revision = ++selectionRevision;
+            if (syncTimer) {
+                clearTimeout(syncTimer);
+                syncTimer = null;
+            }
+            button.disabled = true;
+            button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving Selection...';
+            setSyncStatus('Submitting final selection to the studio...', '');
+
+            try {
+                await syncQueue.catch(() => {});
+                const result = await postSelection('submit_selection', namesSnapshot);
+                if (revision === selectionRevision) setSyncStatus(`Submitted successfully: ${result.selected_count} photo(s) saved to studio.`, 'ok');
+                if (whatsappWindow && !whatsappWindow.closed) {
+                    whatsappWindow.location.href = whatsappUrl;
+                } else {
+                    window.location.href = whatsappUrl;
+                }
+            } catch (error) {
+                console.error('Final selection submission failed:', error);
+                if (whatsappWindow && !whatsappWindow.closed) whatsappWindow.location.href = whatsappUrl;
+                else window.location.href = whatsappUrl;
+                alert(`The selection could not be confirmed on the studio server: ${error.message}
+A WhatsApp message will open as a backup. Please press Send in WhatsApp.`);
+                setSyncStatus('Server submission failed; WhatsApp backup opened.', 'error');
+            } finally {
+                button.disabled = false;
+                button.innerHTML = '<i class="fa-brands fa-whatsapp"></i> Submit Selection';
+            }
+        }
+
+        function showError(message) {
+            $('loadingScreen').classList.add('hidden');
+            $('pinScreen').classList.add('hidden');
+            $('galleryScreen').classList.add('hidden');
+            $('bottomActionBar').classList.add('hidden');
+            $('errorMsgText').textContent = message;
+            $('errorScreen').classList.remove('hidden');
+        }
+    </script>
 </body>
 </html>
