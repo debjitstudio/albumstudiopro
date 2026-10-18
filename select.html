@@ -162,6 +162,9 @@
         .counter-label { font-size: 10px; color: var(--muted); text-transform: uppercase; font-weight: 800; letter-spacing: .6px; }
         .counter-number { font-size: 19px; font-weight: 900; margin-top: 1px; }
         .counter-number span:first-child { color: var(--green); }
+        .sync-status { color: #9ca3af; font-size: 10px; font-weight: 700; margin-top: 4px; }
+        .sync-status.ok { color: #4ade80; }
+        .sync-status.error { color: #f87171; }
         .action-row { display: flex; gap: 8px; flex-wrap: wrap; }
         .modal {
             position: fixed; inset: 0; z-index: 50; background: #000f; display: flex;
@@ -268,6 +271,7 @@
                 <div>
                     <div class="counter-label">Selected Photos</div>
                     <div class="counter-number"><span id="selectedCountText">0</span> / <span id="maxLimitText">100</span></div>
+                    <div id="syncStatus" class="sync-status">Selections sync to studio cloud.</div>
                 </div>
             </div>
             <div class="action-row">
@@ -303,6 +307,10 @@
         let clientEventName = '';
         let currentFilter = 'all';
         let currentLightboxPhotoName = null;
+        let verifiedPin = '';
+        let syncTimer = null;
+        let syncQueue = Promise.resolve();
+        let selectionRevision = 0;
 
         try {
             const savedNames = JSON.parse(localStorage.getItem(storageKey) || '[]');
@@ -405,15 +413,19 @@
                     return;
                 }
 
+                verifiedPin = pin;
                 clientEventName = String(data.customer_name || 'Client');
                 studioWhatsApp = String(data.studio_phone || '').replace(/\D/g, '');
                 maxPhotoLimit = Math.max(1, Number.parseInt(data.max_limit, 10) || 100);
                 galleryPhotos = Array.isArray(data.photos) ? data.photos.filter(photo => photo && photo.name && photo.url) : [];
 
                 const allowedNames = new Set(galleryPhotos.map(photo => String(photo.name)));
-                selectedPhotos = new Set(
-                    Array.from(selectedPhotos).filter(name => allowedNames.has(name)).slice(0, maxPhotoLimit)
-                );
+                const localNames = Array.from(selectedPhotos).filter(name => allowedNames.has(name));
+                const serverSelection = data.selection && Array.isArray(data.selection.selected_names)
+                    ? data.selection.selected_names.map(String).filter(name => allowedNames.has(name))
+                    : [];
+                const serverHasSavedState = Boolean(data.selection && ['in_progress', 'submitted'].includes(data.selection.status));
+                selectedPhotos = new Set((serverHasSavedState ? serverSelection : localNames).slice(0, maxPhotoLimit));
                 saveSelection();
 
                 $('topEventName').textContent = clientEventName;
@@ -429,6 +441,13 @@
 
                 renderPhotosGrid();
                 updateCounterUI();
+                if (selectedPhotos.size > 0 && !serverHasSavedState) {
+                    scheduleSelectionSync();
+                } else if (serverHasSavedState) {
+                    setSyncStatus(data.selection.status === 'submitted' ? 'Your submitted selection is saved to the studio.' : 'Your selection is synced to the studio.', 'ok');
+                } else {
+                    setSyncStatus('Selections sync to studio cloud.', '');
+                }
             } catch (error) {
                 errorElement.textContent = error.message || 'Network error. Please try again.';
                 errorElement.classList.remove('hidden');
@@ -528,6 +547,7 @@
             renderPhotosGrid();
             updateCounterUI();
             updateLightboxButton();
+            scheduleSelectionSync();
         }
 
         function saveSelection() {
@@ -622,7 +642,51 @@
             }
         }
 
-        function submitViaWhatsApp() {
+        function setSyncStatus(message, state) {
+            const element = $('syncStatus');
+            if (!element) return;
+            element.textContent = message;
+            element.className = `sync-status${state ? ` ${state}` : ''}`;
+        }
+
+        async function postSelection(action, names) {
+            if (!verifiedPin || !sessionId) throw new Error('The gallery PIN verification is missing. Unlock the gallery again.');
+            const formData = new FormData();
+            formData.append('action', action);
+            formData.append('session_id', sessionId);
+            formData.append('pin', verifiedPin);
+            formData.append('selected_names', JSON.stringify(names));
+
+            const response = await fetch(API_URL, { method: 'POST', body: formData, cache: 'no-store' });
+            let data;
+            try { data = await response.json(); }
+            catch (error) { throw new Error(`The studio server returned an invalid response (HTTP ${response.status}).`); }
+            if (!response.ok || data.status !== 'success') throw new Error(data.message || `Could not save selection (HTTP ${response.status}).`);
+            return data;
+        }
+
+        function scheduleSelectionSync() {
+            if (!verifiedPin) return;
+            const snapshot = Array.from(selectedPhotos);
+            const revision = ++selectionRevision;
+            if (syncTimer) clearTimeout(syncTimer);
+            setSyncStatus('Saving selection to studio cloud...', '');
+            syncTimer = setTimeout(() => {
+                syncTimer = null;
+                syncQueue = syncQueue.catch(() => {}).then(() => postSelection('save_selection', snapshot));
+                syncQueue.then((result) => {
+                    if (revision === selectionRevision) {
+                        const count = Number(result.selected_count || 0);
+                        setSyncStatus(`${count} selected photo(s) saved to studio cloud.`, 'ok');
+                    }
+                }).catch((error) => {
+                    if (revision === selectionRevision) setSyncStatus('Online save failed. Keep this page open and retry Submit Selection.', 'error');
+                    console.error('Selection sync failed:', error);
+                });
+            }, 450);
+        }
+
+        async function submitViaWhatsApp() {
             if (selectedPhotos.size === 0) {
                 alert('Please select at least one photo before submitting.');
                 return;
@@ -633,7 +697,38 @@
             }
 
             const whatsappUrl = `https://wa.me/${studioWhatsApp}?text=${encodeURIComponent(generateFormattedList())}`;
-            window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+            const whatsappWindow = window.open('about:blank', '_blank');
+            const button = $('submitBtn');
+            const namesSnapshot = Array.from(selectedPhotos);
+            const revision = ++selectionRevision;
+            if (syncTimer) {
+                clearTimeout(syncTimer);
+                syncTimer = null;
+            }
+            button.disabled = true;
+            button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving Selection...';
+            setSyncStatus('Submitting final selection to the studio...', '');
+
+            try {
+                await syncQueue.catch(() => {});
+                const result = await postSelection('submit_selection', namesSnapshot);
+                if (revision === selectionRevision) setSyncStatus(`Submitted successfully: ${result.selected_count} photo(s) saved to studio.`, 'ok');
+                if (whatsappWindow && !whatsappWindow.closed) {
+                    whatsappWindow.location.href = whatsappUrl;
+                } else {
+                    window.location.href = whatsappUrl;
+                }
+            } catch (error) {
+                console.error('Final selection submission failed:', error);
+                if (whatsappWindow && !whatsappWindow.closed) whatsappWindow.location.href = whatsappUrl;
+                else window.location.href = whatsappUrl;
+                alert(`The selection could not be confirmed on the studio server: ${error.message}
+A WhatsApp message will open as a backup. Please press Send in WhatsApp.`);
+                setSyncStatus('Server submission failed; WhatsApp backup opened.', 'error');
+            } finally {
+                button.disabled = false;
+                button.innerHTML = '<i class="fa-brands fa-whatsapp"></i> Submit Selection';
+            }
         }
 
         function showError(message) {
