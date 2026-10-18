@@ -3,354 +3,512 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VIP Client Photo Selection Portal | AlbumStudio PRO</title>
+    <meta name="theme-color" content="#070a12">
+    <title>Client Photo Selection | AlbumStudio PRO</title>
     <link rel="icon" type="image/png" href="icon.png">
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <style>
+        :root {
+            color-scheme: dark;
+            --bg: #070a12;
+            --panel: #111827;
+            --panel-deep: #0b101e;
+            --border: #273449;
+            --muted: #9ca3af;
+            --yellow: #facc15;
+            --blue: #2563eb;
+            --green: #22c55e;
+        }
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #070a12;
-            color: #ffffff;
-            user-select: none;
-            -webkit-user-select: none;
+            margin: 0;
+            min-height: 100vh;
+            background: radial-gradient(circle at top, #131b2e 0, var(--bg) 48%);
+            color: #fff;
+            font-family: Poppins, "Segoe UI", sans-serif;
             overflow-x: hidden;
         }
-
-        img {
-            pointer-events: none;
-            -webkit-user-drag: none;
+        button, input { font: inherit; }
+        button { cursor: pointer; }
+        img { -webkit-user-drag: none; }
+        .hidden { display: none !important; }
+        .topbar {
+            position: sticky; top: 0; z-index: 20;
+            background: rgba(11, 16, 30, .94);
+            border-bottom: 1px solid #263244;
+            backdrop-filter: blur(14px);
+            padding: 13px 18px;
         }
-
-        /* Photo Card Hover & Selection Glow */
+        .topbar-inner {
+            max-width: 1440px; margin: auto; display: flex;
+            align-items: center; justify-content: space-between; gap: 14px;
+        }
+        .brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
+        .brand-mark {
+            width: 42px; height: 42px; flex: 0 0 42px; border-radius: 13px;
+            display: grid; place-items: center; color: #101010; font-size: 19px;
+            background: linear-gradient(135deg, #fde047, #d97706);
+            box-shadow: 0 0 20px #facc1528;
+        }
+        .brand-title { font-size: 17px; font-weight: 900; line-height: 1.15; letter-spacing: .5px; }
+        .brand-title span { color: var(--yellow); }
+        .brand-subtitle { color: var(--muted); font-size: 9px; letter-spacing: 1.8px; text-transform: uppercase; margin-top: 4px; }
+        .event-meta {
+            display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end;
+            gap: 8px 14px; color: #9ca3af; font-size: 11px;
+            border: 1px solid #334155; background: #131b2e; border-radius: 99px; padding: 8px 13px;
+        }
+        .event-meta strong { color: var(--yellow); overflow-wrap: anywhere; }
+        main { width: 100%; max-width: 1440px; margin: 0 auto; padding: 24px 18px 125px; }
+        .center-state { min-height: 58vh; display: flex; align-items: center; justify-content: center; padding: 18px 0; }
+        .state-card {
+            width: 100%; max-width: 480px; background: rgba(17, 24, 39, .96);
+            border: 1px solid var(--border); border-radius: 24px; padding: 28px;
+            text-align: center; box-shadow: 0 24px 70px #0008;
+        }
+        .state-icon {
+            width: 66px; height: 66px; display: grid; place-items: center; margin: 0 auto 15px;
+            border-radius: 20px; background: #facc1517; border: 1px solid #facc1545;
+            color: var(--yellow); font-size: 26px;
+        }
+        h1, h2, h3, p { margin-top: 0; }
+        .state-card h2 { margin-bottom: 7px; font-size: 23px; font-weight: 900; }
+        .muted { color: var(--muted); }
+        .small { font-size: 12px; line-height: 1.7; }
+        .spin {
+            width: 50px; height: 50px; border-radius: 50%; border: 4px solid #374151;
+            border-top-color: var(--yellow); animation: spin .8s linear infinite; margin: 0 auto 17px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .pin-input {
+            width: 205px; margin: 17px auto 8px; display: block;
+            border: 2px solid #374151; border-radius: 15px; background: #080d17;
+            color: var(--yellow); padding: 14px 12px; text-align: center;
+            font-size: 27px; font-weight: 900; letter-spacing: 10px; outline: none;
+        }
+        .pin-input:focus { border-color: var(--yellow); }
+        .btn {
+            border: 0; border-radius: 11px; padding: 12px 16px; font-weight: 800;
+            transition: transform .15s ease, filter .15s ease; display: inline-flex;
+            align-items: center; justify-content: center; gap: 8px; color: #fff;
+        }
+        .btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
+        .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+        .btn-primary { background: linear-gradient(110deg, #2563eb, #06b6d4); }
+        .btn-green { background: linear-gradient(110deg, #22c55e, #059669); color: #04120a; }
+        .btn-dark { background: #1f2937; border: 1px solid #3b4659; }
+        .btn-red { background: #dc2626; }
+        .full { width: 100%; margin-top: 10px; }
+        .error-text { color: #f87171; font-size: 12px; font-weight: 700; margin: 8px 0 0; }
+        .gallery-toolbar {
+            display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+            gap: 14px; background: #111827; border: 1px solid var(--border);
+            border-radius: 18px; padding: 16px; margin-bottom: 20px;
+            box-shadow: 0 12px 32px #0003;
+        }
+        .gallery-title { font-size: 19px; font-weight: 900; margin: 0 0 4px; overflow-wrap: anywhere; }
+        .toolbar-sub { color: var(--muted); font-size: 11px; line-height: 1.6; margin: 0; }
+        .filter-row { display: flex; gap: 6px; padding: 5px; border: 1px solid #263244; background: #090d16; border-radius: 12px; }
+        .filter-btn {
+            border: 0; background: transparent; color: var(--muted); border-radius: 8px;
+            padding: 9px 12px; font-size: 11px; font-weight: 800; white-space: nowrap;
+        }
+        .filter-btn.active { background: var(--blue); color: #fff; }
+        .filter-btn.active.selected-filter { background: #16a34a; }
+        .photo-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 15px; }
         .photo-card {
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            min-width: 0; overflow: hidden; border: 2px solid #202b3e; border-radius: 15px;
+            background: #111827; transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
         }
-        .photo-card:hover {
-            transform: translateY(-4px);
+        .photo-card:hover { transform: translateY(-3px); }
+        .photo-card.selected { border-color: var(--green); box-shadow: 0 0 20px #22c55e2f; }
+        .photo-preview {
+            display: block; width: 100%; aspect-ratio: 4 / 3; border: 0; padding: 0; position: relative;
+            background: #05070c; overflow: hidden;
         }
-        .photo-card.selected {
-            border-color: #22c55e;
-            box-shadow: 0 0 25px rgba(34, 197, 94, 0.45);
-            transform: scale(0.98);
+        .photo-preview img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .25s ease; }
+        .photo-preview:hover img { transform: scale(1.04); }
+        .photo-card.selected .photo-preview::after {
+            content: ""; position: absolute; inset: 0; background: #22c55e18; pointer-events: none;
         }
-        .photo-card.selected .check-badge {
-            background-color: #22c55e;
-            border-color: #22c55e;
-            color: #000000;
-            transform: scale(1.1);
+        .serial {
+            position: absolute; left: 9px; top: 9px; z-index: 1; background: #000b;
+            border: 1px solid #ffffff25; border-radius: 6px; padding: 3px 7px; color: #fff; font-size: 10px; font-weight: 800;
         }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0b0f19; }
-        ::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #facc15; }
+        .check-badge {
+            position: absolute; right: 9px; top: 9px; z-index: 1; width: 29px; height: 29px;
+            border-radius: 50%; display: grid; place-items: center; background: #0009;
+            color: transparent; border: 2px solid #ffffffaa; font-size: 12px;
+        }
+        .photo-card.selected .check-badge { background: var(--green); color: #06200e; border-color: var(--green); }
+        .photo-footer { display: flex; align-items: center; justify-content: space-between; gap: 7px; padding: 9px 10px; background: #0d1322; }
+        .photo-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 10px; font-weight: 700; color: #d1d5db; }
+        .zoom-btn { flex: 0 0 auto; border: 0; border-radius: 7px; color: #9ca3af; background: #1f2937; width: 29px; height: 28px; }
+        .zoom-btn:hover { color: var(--yellow); }
+        .empty-grid { grid-column: 1 / -1; padding: 55px 16px; text-align: center; border: 1px dashed #374151; border-radius: 15px; color: var(--muted); }
+        .bottom-bar {
+            position: fixed; z-index: 30; left: 0; right: 0; bottom: 0;
+            background: #0b101ef5; border-top: 1px solid #283548; backdrop-filter: blur(14px);
+            padding: 12px 18px; box-shadow: 0 -10px 35px #0007;
+        }
+        .bottom-inner {
+            max-width: 1440px; margin: auto; display: flex; align-items: center;
+            justify-content: space-between; gap: 15px; flex-wrap: wrap;
+        }
+        .counter { display: flex; align-items: center; gap: 12px; }
+        .counter-icon { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 12px; color: var(--green); background: #22c55e17; border: 1px solid #22c55e45; }
+        .counter-label { font-size: 10px; color: var(--muted); text-transform: uppercase; font-weight: 800; letter-spacing: .6px; }
+        .counter-number { font-size: 19px; font-weight: 900; margin-top: 1px; }
+        .counter-number span:first-child { color: var(--green); }
+        .action-row { display: flex; gap: 8px; flex-wrap: wrap; }
+        .modal {
+            position: fixed; inset: 0; z-index: 50; background: #000f; display: flex;
+            flex-direction: column; justify-content: space-between; padding: 16px;
+        }
+        .modal-head, .modal-foot { width: 100%; max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+        .modal-name { color: var(--yellow); font-size: 13px; font-weight: 800; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .modal-body { flex: 1; min-height: 0; display: grid; place-items: center; padding: 14px 0; }
+        .modal-body img { max-width: 100%; max-height: 73vh; object-fit: contain; border-radius: 8px; }
+        @media (max-width: 1100px) { .photo-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+        @media (max-width: 800px) {
+            .photo-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+            .topbar { padding: 11px 12px; }
+            .event-meta { display: none; }
+            main { padding: 16px 12px 155px; }
+            .gallery-toolbar { padding: 12px; align-items: flex-start; }
+            .gallery-title { font-size: 16px; }
+            .filter-row { width: 100%; }
+            .filter-btn { flex: 1; }
+            .bottom-bar { padding: 10px 12px; }
+            .bottom-inner { gap: 10px; }
+            .btn { padding: 10px 12px; font-size: 11px; }
+        }
+        @media (max-width: 480px) {
+            .photo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+            .brand-title { font-size: 15px; }
+            .brand-subtitle { font-size: 8px; letter-spacing: 1px; }
+            .state-card { padding: 24px 17px; }
+            .action-row { width: 100%; }
+            .action-row .btn { flex: 1; }
+            .counter-icon { width: 36px; height: 36px; }
+            .counter-number { font-size: 16px; }
+            .counter-label { font-size: 9px; }
+            .photo-name { font-size: 9px; }
+        }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between" oncontextmenu="return false;">
-
-    <!-- TOP HEADER -->
-    <header class="w-full bg-[#0b101e]/90 backdrop-blur-md border-b border-gray-800 sticky top-0 z-40 py-3.5 px-4">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-400 to-amber-600 text-black flex items-center justify-center font-black text-lg shadow-[0_0_15px_rgba(250,204,21,0.4)]">
-                    <i class="fa-solid fa-camera-retro"></i>
-                </div>
+<body>
+    <header class="topbar">
+        <div class="topbar-inner">
+            <div class="brand">
+                <div class="brand-mark"><i class="fa-solid fa-camera-retro"></i></div>
                 <div>
-                    <h1 class="text-lg md:text-xl font-black tracking-wider leading-none">ALBUM<span class="text-yellow-400">STUDIO</span> <span class="text-[10px] bg-blue-600 text-white px-1.5 py-0.5 rounded font-bold align-middle">CLOUD</span></h1>
-                    <p class="text-[10px] text-gray-400 uppercase tracking-widest mt-0.5">VIP Photo Selection Portal</p>
+                    <div class="brand-title">ALBUM<span>STUDIO</span> <span style="font-size:9px;color:#fff;background:#2563eb;padding:3px 5px;border-radius:4px;vertical-align:middle;">CLOUD</span></div>
+                    <div class="brand-subtitle">VIP Photo Selection Portal</div>
                 </div>
             </div>
-
-            <div id="headerEventBadge" class="hidden md:flex items-center gap-3 bg-[#131b2e] border border-gray-700/80 px-4 py-1.5 rounded-full text-xs">
-                <span class="text-gray-400">Event:</span>
-                <strong id="topEventName" class="text-yellow-400 font-bold">Loading...</strong>
-                <span class="text-gray-600">|</span>
-                <span class="text-gray-400">Expires: <strong id="topExpiry" class="text-red-400">-</strong></span>
+            <div id="headerEventBadge" class="event-meta hidden">
+                <span>Event: <strong id="topEventName">-</strong></span>
+                <span>Expires: <strong id="topExpiry" style="color:#f87171;">-</strong></span>
             </div>
         </div>
     </header>
 
-    <!-- MAIN CONTENT AREA -->
-    <main class="flex-grow flex items-center justify-center p-4">
-
-        <!-- 1. LOADING STATE -->
-        <div id="loadingScreen" class="text-center py-20">
-            <div class="w-14 h-14 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-            <h3 class="text-lg font-bold text-white">Connecting to Secure Studio Cloud...</h3>
-            <p class="text-xs text-gray-400 mt-1">Please wait while we verify your gallery link</p>
-        </div>
-
-        <!-- 2. ERROR / EXPIRED STATE -->
-        <div id="errorScreen" class="hidden max-w-md w-full bg-[#111827] border border-red-900/60 rounded-2xl p-8 text-center shadow-2xl">
-            <div class="w-16 h-16 bg-red-500/10 border border-red-500/30 text-red-400 rounded-full flex items-center justify-center text-3xl mx-auto mb-4">
-                <i class="fa-solid fa-triangle-exclamation"></i>
+    <main>
+        <section id="loadingScreen" class="center-state">
+            <div class="state-card">
+                <div class="spin"></div>
+                <h2>Connecting to Secure Studio Cloud</h2>
+                <p class="muted small">Please wait while we verify your gallery link.</p>
             </div>
-            <h2 class="text-xl font-black text-white mb-2">Link Unavailable</h2>
-            <p id="errorMsgText" class="text-sm text-gray-400 mb-6">This selection link has expired or does not exist.</p>
-            <a href="https://albumstudiopro.in" class="inline-block bg-gray-800 hover:bg-gray-700 text-white text-xs font-bold px-6 py-3 rounded-xl transition uppercase tracking-wider">
-                Back to Official Website
-            </a>
-        </div>
+        </section>
 
-        <!-- 3. PIN VERIFICATION SCREEN -->
-        <div id="pinScreen" class="hidden max-w-md w-full bg-[#111827]/95 border border-gray-800 rounded-3xl p-6 sm:p-8 text-center shadow-[0_25px_60px_rgba(0,0,0,0.85)] relative overflow-hidden">
-            <div class="inline-block bg-yellow-400/10 border border-yellow-400/30 text-yellow-400 text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-3">
-                🔒 Private Client Gallery
+        <section id="errorScreen" class="center-state hidden">
+            <div class="state-card">
+                <div class="state-icon" style="color:#f87171;border-color:#f8717140;background:#ef444414;"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <h2>Link Unavailable</h2>
+                <p id="errorMsgText" class="muted small">This selection link has expired or does not exist.</p>
+                <a class="btn btn-dark full" href="https://albumstudiopro.in" style="text-decoration:none;">Back to Official Website</a>
             </div>
-            <h2 id="pinCustomerTitle" class="text-2xl font-black text-white mb-1">Welcome!</h2>
-            <p class="text-xs text-gray-400 mb-6">Please enter your 4-digit Secret Access PIN to view and select your event photos.</p>
+        </section>
 
-            <div class="mb-5">
-                <input type="text" id="pinInput" maxlength="4" placeholder="• • • •" class="w-48 text-center text-3xl font-black tracking-[12px] bg-[#0b0f19] border-2 border-gray-700 focus:border-yellow-400 text-yellow-400 rounded-2xl py-3.5 outline-none transition shadow-inner">
-                <p id="pinErrorMsg" class="text-xs text-red-400 font-semibold mt-2 hidden">Invalid PIN! Please try again.</p>
+        <section id="pinScreen" class="center-state hidden">
+            <div class="state-card">
+                <div class="state-icon"><i class="fa-solid fa-lock"></i></div>
+                <div style="font-size:10px;font-weight:900;letter-spacing:1px;color:var(--yellow);margin-bottom:8px;">PRIVATE CLIENT GALLERY</div>
+                <h2 id="pinCustomerTitle">Welcome</h2>
+                <p class="muted small">Enter your 4-digit Secret Access PIN to view and select your event photos.</p>
+                <input id="pinInput" class="pin-input" type="password" inputmode="numeric" autocomplete="one-time-code" maxlength="4" placeholder="••••" aria-label="Four digit PIN">
+                <p id="pinErrorMsg" class="error-text hidden" role="alert">Invalid PIN. Please try again.</p>
+                <button id="unlockBtn" class="btn btn-primary full" type="button"><i class="fa-solid fa-unlock-keyhole"></i> Unlock Photo Gallery</button>
             </div>
+        </section>
 
-            <button onclick="verifyPinAndLoad()" id="unlockBtn" class="w-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-black py-4 rounded-xl shadow-[0_10px_25px_rgba(37,99,235,0.4)] transition flex items-center justify-center gap-2 text-sm uppercase tracking-wider">
-                <i class="fa-solid fa-unlock-keyhole"></i> Unlock Photo Gallery
-            </button>
-        </div>
-
-        <!-- 4. PHOTO GALLERY WORKSPACE -->
-        <div id="galleryScreen" class="hidden w-full max-w-7xl mx-auto pb-28 pt-2">
-            
-            <!-- Gallery Top Controls & Filter Bar -->
-            <div class="bg-[#111827] border border-gray-800 rounded-2xl p-4 mb-6 flex flex-wrap justify-between items-center gap-4 shadow-lg">
+        <section id="galleryScreen" class="hidden">
+            <div class="gallery-toolbar">
                 <div>
-                    <h2 id="galleryEventTitle" class="text-lg sm:text-xl font-black text-white">Event Gallery</h2>
-                    <p class="text-xs text-gray-400">Tap on your favorite photos to select them for album printing</p>
+                    <h1 id="galleryEventTitle" class="gallery-title">Event Gallery</h1>
+                    <p class="toolbar-sub">Select your favorite photos for album design. Tap a photo to select or deselect it.</p>
                 </div>
-
-                <!-- Filter Buttons -->
-                <div class="flex items-center gap-2 bg-[#0b0f19] p-1.5 rounded-xl border border-gray-800">
-                    <button onclick="filterGallery('all')" id="filterAllBtn" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-blue-600 text-white transition">
-                        All Photos (<span id="countAll">0</span>)
-                    </button>
-                    <button onclick="filterGallery('selected')" id="filterSelBtn" class="px-3.5 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition">
-                        Selected (<span id="countSelectedTab">0</span>)
-                    </button>
+                <div class="filter-row">
+                    <button id="filterAllBtn" class="filter-btn active" type="button">All Photos (<span id="countAll">0</span>)</button>
+                    <button id="filterSelBtn" class="filter-btn" type="button">Selected (<span id="countSelectedTab">0</span>)</button>
                 </div>
             </div>
-
-            <!-- Photos Grid -->
-            <div id="photosGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5 sm:gap-5">
-                <!-- Populated dynamically via JS -->
-            </div>
-
-        </div>
-
+            <div id="photosGrid" class="photo-grid"></div>
+        </section>
     </main>
 
-    <!-- STICKY BOTTOM SELECTION BAR (Visible only in gallery) -->
-    <div id="bottomActionBar" class="hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0b101e]/95 backdrop-blur-lg border-t border-gray-800 py-3.5 px-4 shadow-[0_-10px_30px_rgba(0,0,0,0.8)]">
-        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-3">
-            
-            <!-- Counter & Progress -->
-            <div class="flex items-center gap-3">
-                <div class="w-11 h-11 rounded-xl bg-green-500/10 border border-green-500/30 text-green-400 flex items-center justify-center font-black text-lg">
-                    <i class="fa-solid fa-check-double"></i>
-                </div>
+    <section id="bottomActionBar" class="bottom-bar hidden">
+        <div class="bottom-inner">
+            <div class="counter">
+                <div class="counter-icon"><i class="fa-solid fa-check-double"></i></div>
                 <div>
-                    <div class="text-xs text-gray-400 font-semibold uppercase">Selected Photos</div>
-                    <div class="text-base sm:text-xl font-black text-white">
-                        <span id="selectedCountText" class="text-green-400">0</span> / <span id="maxLimitText">100</span>
-                    </div>
+                    <div class="counter-label">Selected Photos</div>
+                    <div class="counter-number"><span id="selectedCountText">0</span> / <span id="maxLimitText">100</span></div>
                 </div>
             </div>
-
-            <!-- Submit Buttons -->
-            <div class="flex items-center gap-2.5">
-                <button onclick="copySelectionList()" class="bg-gray-800 hover:bg-gray-700 border border-gray-600 text-white font-bold text-xs sm:text-sm px-4 py-3 rounded-xl transition flex items-center gap-2">
-                    <i class="fa-regular fa-copy"></i> <span class="hidden sm:inline">Copy List</span>
-                </button>
-                <button onclick="submitViaWhatsApp()" class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-400 hover:to-emerald-500 text-black font-black text-xs sm:text-sm px-5 sm:px-7 py-3 rounded-xl shadow-[0_0_20px_rgba(34,197,94,0.4)] transition flex items-center gap-2">
-                    <i class="fa-brands fa-whatsapp text-base sm:text-lg"></i> Submit Selection
-                </button>
+            <div class="action-row">
+                <button id="copyListBtn" class="btn btn-dark" type="button"><i class="fa-regular fa-copy"></i> Copy List</button>
+                <button id="submitBtn" class="btn btn-green" type="button"><i class="fa-brands fa-whatsapp"></i> Submit Selection</button>
             </div>
-
         </div>
-    </div>
+    </section>
 
-    <!-- LIGHTBOX MODAL FOR FULL PHOTO PREVIEW -->
-    <div id="lightboxModal" class="hidden fixed inset-0 z-50 bg-black/95 backdrop-blur-md flex flex-col justify-between p-4">
-        <div class="flex justify-between items-center max-w-6xl w-full mx-auto py-2">
-            <span id="lightboxFileName" class="text-sm font-bold text-yellow-400 truncate max-w-xs">Photo.jpg</span>
-            <button onclick="closeLightbox()" class="w-10 h-10 rounded-full bg-gray-800 hover:bg-red-600 text-white flex items-center justify-center text-lg transition">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
+    <section id="lightboxModal" class="modal hidden" role="dialog" aria-modal="true" aria-label="Photo preview">
+        <div class="modal-head">
+            <span id="lightboxFileName" class="modal-name">Photo.jpg</span>
+            <button id="closeLightboxBtn" class="btn btn-dark" type="button" aria-label="Close preview"><i class="fa-solid fa-xmark"></i></button>
         </div>
-
-        <div class="flex-grow flex items-center justify-center overflow-hidden my-2">
-            <img id="lightboxImg" src="" alt="Preview" class="max-h-[75vh] max-w-full object-contain rounded-lg shadow-2xl">
+        <div class="modal-body"><img id="lightboxImg" src="" alt="Photo preview"></div>
+        <div class="modal-foot" style="justify-content:center;">
+            <button id="lightboxSelectBtn" class="btn btn-green" type="button">Select Photo</button>
         </div>
+    </section>
 
-        <div class="flex justify-center items-center gap-4 pb-4">
-            <button id="lightboxSelectBtn" onclick="toggleSelectFromLightbox()" class="px-8 py-3.5 rounded-xl font-black text-sm uppercase tracking-wider transition flex items-center gap-2">
-                Select Photo
-            </button>
-        </div>
-    </div>
-
-    <!-- JAVASCRIPT LOGIC -->
     <script>
-        const API_URL = "https://addguru.xyz/albumstudio/upload_selection.php";
+        'use strict';
+
+        const API_URL = 'https://addguru.xyz/albumstudio/upload_selection.php';
         const urlParams = new URLSearchParams(window.location.search);
         const sessionId = urlParams.get('session') || urlParams.get('id') || '';
+        const storageKey = `as_sel_${sessionId}`;
 
         let galleryPhotos = [];
         let selectedPhotos = new Set();
         let maxPhotoLimit = 100;
-        let studioWhatsApp = "916296085132";
-        let clientEventName = "";
+        let studioWhatsApp = '';
+        let clientEventName = '';
         let currentFilter = 'all';
         let currentLightboxPhotoName = null;
 
-        // Load Saved Selections from Browser Storage
-        const storageKey = `as_sel_${sessionId}`;
-        const savedData = localStorage.getItem(storageKey);
-        if (savedData) {
-            try {
-                JSON.parse(savedData).forEach(name => selectedPhotos.add(name));
-            } catch (e) {}
+        try {
+            const savedNames = JSON.parse(localStorage.getItem(storageKey) || '[]');
+            if (Array.isArray(savedNames)) savedNames.forEach(name => selectedPhotos.add(String(name)));
+        } catch (error) {
+            localStorage.removeItem(storageKey);
         }
 
-        // Initial Check on Page Load
-        window.addEventListener('DOMContentLoaded', async () => {
-            if (!sessionId) {
-                showError("No session ID found in the URL. Please check the link shared by your studio.");
-                return;
+        const $ = (id) => document.getElementById(id);
+
+        window.addEventListener('DOMContentLoaded', checkSessionStatus);
+        $('unlockBtn').addEventListener('click', verifyPinAndLoad);
+        $('pinInput').addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') verifyPinAndLoad();
+            if (event.key.length === 1 && !/^\d$/.test(event.key)) {
+                event.preventDefault();
             }
-            await checkSessionStatus();
+        });
+        $('filterAllBtn').addEventListener('click', () => filterGallery('all'));
+        $('filterSelBtn').addEventListener('click', () => filterGallery('selected'));
+        $('copyListBtn').addEventListener('click', copySelectionList);
+        $('submitBtn').addEventListener('click', submitViaWhatsApp);
+        $('closeLightboxBtn').addEventListener('click', closeLightbox);
+        $('lightboxSelectBtn').addEventListener('click', toggleSelectFromLightbox);
+        $('lightboxModal').addEventListener('click', (event) => {
+            if (event.target === $('lightboxModal')) closeLightbox();
+        });
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') closeLightbox();
         });
 
-        // Allow Enter key on PIN input
-        document.getElementById('pinInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') verifyPinAndLoad();
-        });
+        async function apiGet(params) {
+            const response = await fetch(`${API_URL}?${params.toString()}`, {
+                method: 'GET',
+                cache: 'no-store'
+            });
+
+            let data;
+            try {
+                data = await response.json();
+            } catch (error) {
+                throw new Error(`The cloud server returned an invalid response (HTTP ${response.status}).`);
+            }
+
+            return { response, data };
+        }
 
         async function checkSessionStatus() {
-            try {
-                const res = await fetch(`${API_URL}?session=${encodeURIComponent(sessionId)}`);
-                const data = await res.json();
+            if (!sessionId) {
+                showError('No session ID was found in this URL. Please use the complete link provided by your studio.');
+                return;
+            }
 
-                document.getElementById('loadingScreen').classList.add('hidden');
+            try {
+                const params = new URLSearchParams({ session: sessionId });
+                const { data } = await apiGet(params);
+                $('loadingScreen').classList.add('hidden');
 
                 if (data.status === 'pin_required') {
-                    clientEventName = data.customer_name || "Valued Client";
-                    document.getElementById('pinCustomerTitle').innerText = clientEventName;
-                    document.getElementById('pinScreen').classList.remove('hidden');
-                    document.getElementById('pinInput').focus();
+                    clientEventName = data.customer_name || 'Valued Client';
+                    $('pinCustomerTitle').textContent = clientEventName;
+                    $('pinScreen').classList.remove('hidden');
+                    $('pinInput').focus();
                 } else if (data.status === 'error') {
-                    showError(data.message);
+                    showError(data.message || 'This selection link has expired or does not exist.');
+                } else if (data.status === 'success') {
+                    $('pinScreen').classList.remove('hidden');
+                    $('pinCustomerTitle').textContent = 'Enter Your Access PIN';
+                } else {
+                    showError('The cloud server returned an unexpected response.');
                 }
-            } catch (err) {
-                showError("Unable to connect to the cloud server. Please check your internet connection.");
+            } catch (error) {
+                showError('Unable to connect to the cloud server. Check the internet connection or try again later.');
+                console.error('Session check failed:', error);
             }
         }
 
         async function verifyPinAndLoad() {
-            const pin = document.getElementById('pinInput').value.trim();
-            const errEl = document.getElementById('pinErrorMsg');
-            const btn = document.getElementById('unlockBtn');
+            const pin = $('pinInput').value.trim();
+            const errorElement = $('pinErrorMsg');
+            const button = $('unlockBtn');
 
-            if (pin.length < 4) {
-                errEl.innerText = "Please enter a valid 4-digit PIN.";
-                errEl.classList.remove('hidden');
+            if (!/^\d{4}$/.test(pin)) {
+                errorElement.textContent = 'Please enter the 4-digit Secret Access PIN.';
+                errorElement.classList.remove('hidden');
                 return;
             }
 
-            errEl.classList.add('hidden');
-            btn.disabled = true;
-            btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Verifying PIN...`;
+            errorElement.classList.add('hidden');
+            button.disabled = true;
+            button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Verifying PIN...';
 
             try {
-                const res = await fetch(`${API_URL}?session=${encodeURIComponent(sessionId)}&pin=${encodeURIComponent(pin)}`);
-                const data = await res.json();
+                const params = new URLSearchParams({ session: sessionId, pin });
+                const { data } = await apiGet(params);
 
-                if (data.status === 'success') {
-                    clientEventName = data.customer_name;
-                    studioWhatsApp = data.studio_phone || "916296085132";
-                    maxPhotoLimit = data.max_limit || 100;
-                    galleryPhotos = data.photos || [];
-
-                    // Setup UI Headers
-                    document.getElementById('topEventName').innerText = clientEventName;
-                    document.getElementById('topExpiry').innerText = data.expires_date;
-                    document.getElementById('headerEventBadge').classList.remove('hidden');
-                    document.getElementById('galleryEventTitle').innerText = `${clientEventName} (${galleryPhotos.length} Photos)`;
-                    document.getElementById('maxLimitText').innerText = maxPhotoLimit;
-                    document.getElementById('countAll').innerText = galleryPhotos.length;
-
-                    // Switch Screens
-                    document.getElementById('pinScreen').classList.add('hidden');
-                    document.getElementById('galleryScreen').classList.remove('hidden');
-                    document.getElementById('bottomActionBar').classList.remove('hidden');
-
-                    renderPhotosGrid();
-                    updateCounterUI();
-                } else {
-                    errEl.innerText = data.message || "Invalid PIN!";
-                    errEl.classList.remove('hidden');
+                if (data.status !== 'success') {
+                    errorElement.textContent = data.message || 'Invalid PIN. Please try again.';
+                    errorElement.classList.remove('hidden');
+                    return;
                 }
-            } catch (err) {
-                errEl.innerText = "Network error! Please try again.";
-                errEl.classList.remove('hidden');
+
+                clientEventName = String(data.customer_name || 'Client');
+                studioWhatsApp = String(data.studio_phone || '').replace(/\D/g, '');
+                maxPhotoLimit = Math.max(1, Number.parseInt(data.max_limit, 10) || 100);
+                galleryPhotos = Array.isArray(data.photos) ? data.photos.filter(photo => photo && photo.name && photo.url) : [];
+
+                const allowedNames = new Set(galleryPhotos.map(photo => String(photo.name)));
+                selectedPhotos = new Set(
+                    Array.from(selectedPhotos).filter(name => allowedNames.has(name)).slice(0, maxPhotoLimit)
+                );
+                saveSelection();
+
+                $('topEventName').textContent = clientEventName;
+                $('topExpiry').textContent = data.expires_date || '-';
+                $('headerEventBadge').classList.remove('hidden');
+                $('galleryEventTitle').textContent = `${clientEventName} (${galleryPhotos.length} Photos)`;
+                $('maxLimitText').textContent = String(maxPhotoLimit);
+                $('countAll').textContent = String(galleryPhotos.length);
+
+                $('pinScreen').classList.add('hidden');
+                $('galleryScreen').classList.remove('hidden');
+                $('bottomActionBar').classList.remove('hidden');
+
+                renderPhotosGrid();
+                updateCounterUI();
+            } catch (error) {
+                errorElement.textContent = error.message || 'Network error. Please try again.';
+                errorElement.classList.remove('hidden');
+                console.error('Gallery load failed:', error);
             } finally {
-                btn.disabled = false;
-                btn.innerHTML = `<i class="fa-solid fa-unlock-keyhole"></i> Unlock Photo Gallery`;
+                button.disabled = false;
+                button.innerHTML = '<i class="fa-solid fa-unlock-keyhole"></i> Unlock Photo Gallery';
             }
         }
 
         function renderPhotosGrid() {
-            const grid = document.getElementById('photosGrid');
-            grid.innerHTML = '';
+            const grid = $('photosGrid');
+            grid.replaceChildren();
 
-            const listToRender = currentFilter === 'selected' 
-                ? galleryPhotos.filter(p => selectedPhotos.has(p.name))
+            const photosToRender = currentFilter === 'selected'
+                ? galleryPhotos.filter(photo => selectedPhotos.has(String(photo.name)))
                 : galleryPhotos;
 
-            if (listToRender.length === 0) {
-                grid.innerHTML = `<div class="col-span-full text-center py-16 text-gray-500 text-sm">No photos in this view yet.</div>`;
+            if (photosToRender.length === 0) {
+                const empty = document.createElement('div');
+                empty.className = 'empty-grid';
+                empty.textContent = currentFilter === 'selected'
+                    ? 'No photos selected yet. Choose photos from the All Photos tab.'
+                    : 'No photos are available in this gallery.';
+                grid.appendChild(empty);
                 return;
             }
 
-            listToRender.forEach((photo, idx) => {
-                const isSelected = selectedPhotos.has(photo.name);
-                const card = document.createElement('div');
-                card.className = `photo-card relative bg-[#111827] border-2 ${isSelected ? 'selected' : 'border-gray-800'} rounded-2xl overflow-hidden cursor-pointer group`;
-                
-                card.innerHTML = `
-                    <div class="aspect-[4/3] w-full bg-black overflow-hidden relative" onclick="togglePhotoSelection('${photo.name.replace(/'/g, "\\'")}')">
-                        <img src="${photo.url}" loading="lazy" alt="${photo.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                        
-                        <!-- Selection Checkmark Overlay -->
-                        <div class="check-badge absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 border-2 border-white/70 text-transparent flex items-center justify-center text-sm font-black transition shadow-md">
-                            <i class="fa-solid fa-check"></i>
-                        </div>
+            photosToRender.forEach((photo) => {
+                const name = String(photo.name);
+                const selected = selectedPhotos.has(name);
+                const card = document.createElement('article');
+                card.className = `photo-card${selected ? ' selected' : ''}`;
 
-                        <!-- Serial Badge -->
-                        <div class="absolute top-3 left-3 bg-black/65 backdrop-blur-sm text-gray-300 text-[10px] font-bold px-2 py-0.5 rounded-md">
-                            #${idx + 1}
-                        </div>
-                    </div>
+                const previewButton = document.createElement('button');
+                previewButton.className = 'photo-preview';
+                previewButton.type = 'button';
+                previewButton.setAttribute('aria-label', `Preview ${name}`);
+                previewButton.addEventListener('click', () => togglePhotoSelection(name));
 
-                    <!-- Card Bottom Bar -->
-                    <div class="p-2.5 flex justify-between items-center bg-[#0d1322]">
-                        <span class="text-[11px] font-semibold text-gray-300 truncate max-w-[75%]" onclick="togglePhotoSelection('${photo.name.replace(/'/g, "\\'")}')">${photo.name}</span>
-                        <button onclick="openLightbox('${photo.name.replace(/'/g, "\\'")}', '${photo.url}')" class="text-gray-400 hover:text-yellow-400 text-xs px-1.5 py-0.5 rounded transition" title="Zoom Photo">
-                            <i class="fa-solid fa-expand"></i>
-                        </button>
-                    </div>
-                `;
+                const image = document.createElement('img');
+                image.src = String(photo.url);
+                image.alt = name;
+                image.loading = 'lazy';
+                image.decoding = 'async';
+                image.addEventListener('error', () => {
+                    image.style.opacity = '0.2';
+                    previewButton.title = 'This image could not be loaded. Check the server photo URL.';
+                });
+                previewButton.appendChild(image);
+
+                const serial = document.createElement('span');
+                serial.className = 'serial';
+                serial.textContent = `#${galleryPhotos.findIndex(item => item.name === photo.name) + 1}`;
+                previewButton.appendChild(serial);
+
+                const check = document.createElement('span');
+                check.className = 'check-badge';
+                check.innerHTML = '<i class="fa-solid fa-check"></i>';
+                previewButton.appendChild(check);
+
+                const footer = document.createElement('div');
+                footer.className = 'photo-footer';
+
+                const filename = document.createElement('span');
+                filename.className = 'photo-name';
+                filename.title = name;
+                filename.textContent = name;
+                filename.addEventListener('click', () => togglePhotoSelection(name));
+
+                const zoomButton = document.createElement('button');
+                zoomButton.type = 'button';
+                zoomButton.className = 'zoom-btn';
+                zoomButton.title = 'Preview full photo';
+                zoomButton.setAttribute('aria-label', `Preview ${name}`);
+                zoomButton.innerHTML = '<i class="fa-solid fa-expand"></i>';
+                zoomButton.addEventListener('click', () => openLightbox(photo));
+
+                footer.append(filename, zoomButton);
+                card.append(previewButton, footer);
                 grid.appendChild(card);
             });
         }
@@ -360,50 +518,53 @@
                 selectedPhotos.delete(fileName);
             } else {
                 if (selectedPhotos.size >= maxPhotoLimit) {
-                    alert(`Maximum limit reached! You can select up to ${maxPhotoLimit} photos.`);
+                    alert(`Selection limit reached. You can choose up to ${maxPhotoLimit} photos.`);
                     return;
                 }
                 selectedPhotos.add(fileName);
             }
 
-            // Save to LocalStorage
-            localStorage.setItem(storageKey, JSON.stringify(Array.from(selectedPhotos)));
+            saveSelection();
             renderPhotosGrid();
             updateCounterUI();
+            updateLightboxButton();
+        }
+
+        function saveSelection() {
+            try {
+                localStorage.setItem(storageKey, JSON.stringify(Array.from(selectedPhotos)));
+            } catch (error) {
+                console.warn('Could not save selection in this browser:', error);
+            }
         }
 
         function updateCounterUI() {
-            const count = selectedPhotos.size;
-            document.getElementById('selectedCountText').innerText = count;
-            document.getElementById('countSelectedTab').innerText = count;
+            $('selectedCountText').textContent = String(selectedPhotos.size);
+            $('countSelectedTab').textContent = String(selectedPhotos.size);
         }
 
         function filterGallery(mode) {
             currentFilter = mode;
-            const allBtn = document.getElementById('filterAllBtn');
-            const selBtn = document.getElementById('filterSelBtn');
 
-            if (mode === 'all') {
-                allBtn.className = "px-3.5 py-1.5 rounded-lg text-xs font-bold bg-blue-600 text-white transition";
-                selBtn.className = "px-3.5 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition";
-            } else {
-                selBtn.className = "px-3.5 py-1.5 rounded-lg text-xs font-bold bg-green-600 text-white transition";
-                allBtn.className = "px-3.5 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition";
-            }
+            $('filterAllBtn').classList.toggle('active', mode === 'all');
+            $('filterSelBtn').classList.toggle('active', mode === 'selected');
+            $('filterSelBtn').classList.toggle('selected-filter', mode === 'selected');
+
             renderPhotosGrid();
         }
 
-        // Lightbox Functions
-        function openLightbox(name, url) {
-            currentLightboxPhotoName = name;
-            document.getElementById('lightboxFileName').innerText = name;
-            document.getElementById('lightboxImg').src = url;
+        function openLightbox(photo) {
+            currentLightboxPhotoName = String(photo.name);
+            $('lightboxFileName').textContent = currentLightboxPhotoName;
+            $('lightboxImg').src = String(photo.url);
+            $('lightboxImg').alt = currentLightboxPhotoName;
             updateLightboxButton();
-            document.getElementById('lightboxModal').classList.remove('hidden');
+            $('lightboxModal').classList.remove('hidden');
         }
 
         function closeLightbox() {
-            document.getElementById('lightboxModal').classList.add('hidden');
+            $('lightboxModal').classList.add('hidden');
+            $('lightboxImg').src = '';
             currentLightboxPhotoName = null;
         }
 
@@ -414,53 +575,74 @@
         }
 
         function updateLightboxButton() {
-            const btn = document.getElementById('lightboxSelectBtn');
-            const isSel = selectedPhotos.has(currentLightboxPhotoName);
-            if (isSel) {
-                btn.className = "px-8 py-3.5 rounded-xl font-black text-sm uppercase tracking-wider transition flex items-center gap-2 bg-red-600 hover:bg-red-500 text-white";
-                btn.innerHTML = `<i class="fa-solid fa-trash-can"></i> Remove Selection`;
-            } else {
-                btn.className = "px-8 py-3.5 rounded-xl font-black text-sm uppercase tracking-wider transition flex items-center gap-2 bg-green-500 hover:bg-green-400 text-black";
-                btn.innerHTML = `<i class="fa-solid fa-check"></i> Select This Photo`;
-            }
+            const button = $('lightboxSelectBtn');
+            if (!currentLightboxPhotoName) return;
+
+            const isSelected = selectedPhotos.has(currentLightboxPhotoName);
+            button.className = `btn ${isSelected ? 'btn-red' : 'btn-green'}`;
+            button.innerHTML = isSelected
+                ? '<i class="fa-solid fa-xmark"></i> Remove Selection'
+                : '<i class="fa-solid fa-check"></i> Select This Photo';
         }
 
         function generateFormattedList() {
-            const arr = Array.from(selectedPhotos);
-            return `✅ *FINAL PHOTO SELECTION*\n` +
-                   `----------------------------------\n` +
-                   `👤 *Event:* ${clientEventName}\n` +
-                   `📸 *Selected:* ${arr.length} / ${maxPhotoLimit} Photos\n` +
-                   `🆔 *Session:* ${sessionId}\n` +
-                   `----------------------------------\n` +
-                   `📂 *Selected File Names:*\n` +
-                   arr.map((f, i) => `${i + 1}. ${f}`).join('\n');
+            const chosen = Array.from(selectedPhotos);
+            return [
+                'FINAL PHOTO SELECTION',
+                '----------------------------------',
+                `Event: ${clientEventName}`,
+                `Selected: ${chosen.length} / ${maxPhotoLimit} Photos`,
+                `Session: ${sessionId}`,
+                '----------------------------------',
+                'Selected File Names:',
+                ...chosen.map((name, index) => `${index + 1}. ${name}`)
+            ].join('\n');
         }
 
-        function copySelectionList() {
+        async function copySelectionList() {
             if (selectedPhotos.size === 0) {
-                alert("Please select at least 1 photo first!");
+                alert('Please select at least one photo first.');
                 return;
             }
-            navigator.clipboard.writeText(generateFormattedList());
-            alert(`Copied ${selectedPhotos.size} selected photo names to clipboard!`);
+
+            const text = generateFormattedList();
+            try {
+                await navigator.clipboard.writeText(text);
+                alert(`Copied ${selectedPhotos.size} selected photo names.`);
+            } catch (error) {
+                const helper = document.createElement('textarea');
+                helper.value = text;
+                helper.style.position = 'fixed';
+                helper.style.opacity = '0';
+                document.body.appendChild(helper);
+                helper.select();
+                const copied = document.execCommand('copy');
+                helper.remove();
+                alert(copied ? 'Selection list copied.' : 'Could not copy automatically. Please select and copy the list manually.');
+            }
         }
 
         function submitViaWhatsApp() {
             if (selectedPhotos.size === 0) {
-                alert("Please select at least 1 photo before submitting!");
+                alert('Please select at least one photo before submitting.');
                 return;
             }
-            const text = generateFormattedList();
-            const waUrl = `https://wa.me/${studioWhatsApp}?text=${encodeURIComponent(text)}`;
-            window.open(waUrl, '_blank');
+            if (!studioWhatsApp) {
+                alert('The studio WhatsApp number is not available. Please contact your studio.');
+                return;
+            }
+
+            const whatsappUrl = `https://wa.me/${studioWhatsApp}?text=${encodeURIComponent(generateFormattedList())}`;
+            window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
         }
 
-        function showError(msg) {
-            document.getElementById('loadingScreen').classList.add('hidden');
-            document.getElementById('pinScreen').classList.add('hidden');
-            document.getElementById('errorMsgText').innerText = msg;
-            document.getElementById('errorScreen').classList.remove('hidden');
+        function showError(message) {
+            $('loadingScreen').classList.add('hidden');
+            $('pinScreen').classList.add('hidden');
+            $('galleryScreen').classList.add('hidden');
+            $('bottomActionBar').classList.add('hidden');
+            $('errorMsgText').textContent = message;
+            $('errorScreen').classList.remove('hidden');
         }
     </script>
 </body>
