@@ -322,6 +322,16 @@
                 <a id="buyNowBtn" href="https://wa.me/916296085132?text=Hello,%20I%20want%20to%20buy%20AlbumStudio%20PRO%20-%20*1%20Year%20Subscription*%20(Price:%20%E2%82%B9999%20%7C%20Just%20%E2%82%B983/month).%20Please%20share%20payment%20details." target="_blank" class="glow-btn w-full bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-400 hover:from-blue-500 hover:to-cyan-300 text-white font-black text-lg sm:text-xl py-4 sm:py-5 rounded-xl text-center transition transform hover:-translate-y-0.5 flex items-center justify-center gap-3 mb-5">
                     <i class="fa-solid fa-cart-shopping"></i> BUY NOW (INSTANT ACCESS)
                 </a>
+				
+				<!-- Animated Download Now Button -->
+<button type="button"
+    onclick="openDownloadGate()"
+    class="download-now-btn w-full mb-5 py-4 rounded-xl
+           text-lg font-black flex items-center justify-center gap-3">
+    <i class="fa-solid fa-download"></i>
+    DOWNLOAD NOW
+    <i class="fa-solid fa-arrow-down"></i>
+</button>
 
                 <!-- Trust & Instant Access Boxes -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -349,6 +359,77 @@
             </div>
         </div>
     </section>
+	
+	<!-- Secure Download Popup -->
+<div id="downloadGate"
+     class="hidden fixed inset-0 z-[100] bg-black/85
+            items-center justify-center p-4"
+     role="dialog"
+     aria-modal="true"
+     aria-labelledby="downloadGateTitle">
+
+    <div class="w-full max-w-lg bg-[#101726]
+                border border-yellow-400/60 rounded-2xl p-5 sm:p-7
+                shadow-2xl">
+
+        <div class="flex justify-between items-center gap-3 mb-4">
+            <h2 id="downloadGateTitle"
+                class="text-xl sm:text-2xl font-black text-yellow-300">
+                <i class="fa-solid fa-shield-halved mr-2"></i>
+                Secure Download
+            </h2>
+
+            <button type="button"
+                    onclick="closeDownloadGate()"
+                    class="text-gray-300 hover:text-white text-3xl"
+                    aria-label="Close">
+                &times;
+            </button>
+        </div>
+
+        <p class="text-gray-400 text-sm mb-4">
+            Enter your AlbumStudio PRO License Key to unlock downloads.
+        </p>
+
+        <form id="downloadKeyForm" onsubmit="verifyDownloadKey(event)">
+            <label for="downloadLicenseKey"
+                   class="block text-sm font-semibold text-gray-300 mb-2">
+                License Key
+            </label>
+
+            <input id="downloadLicenseKey"
+                   type="text"
+                   required
+                   autocomplete="off"
+                   spellcheck="false"
+                   placeholder="Enter your License Key"
+                   class="w-full rounded-xl bg-black border border-gray-600
+                          focus:border-yellow-400 outline-none p-3
+                          text-white mb-3"
+                   style="user-select:text;-webkit-user-select:text">
+
+            <button id="downloadVerifyButton"
+                    type="submit"
+                    class="w-full rounded-xl bg-yellow-400 hover:bg-yellow-300
+                           text-black font-black p-3 transition">
+                <i class="fa-solid fa-lock mr-2"></i>
+                VERIFY & UNLOCK
+            </button>
+        </form>
+
+        <p id="downloadStatus"
+           class="text-sm mt-4"
+           role="status"
+           aria-live="polite"></p>
+
+        <div id="downloadLinks" class="mt-4 space-y-3"></div>
+
+        <p class="text-gray-500 text-xs mt-5">
+            Download every installer part into the same folder.
+            Run the EXE after all parts have downloaded.
+        </p>
+    </div>
+</div>
 
     <!-- 4. YouTube Videos Section -->
     <section id="videos" class="w-full max-w-6xl mx-auto px-4 py-10 md:py-14 relative z-10">
@@ -613,6 +694,154 @@
                 return false;
             }
         });
+		
+		/* AlbumStudio PRO Secure Download UI */
+const downloadVerifyEndpoint =
+    'https://addguru.xyz/albumstudio/download-verify.php';
+
+function openDownloadGate() {
+    const modal = document.getElementById('downloadGate');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+
+    document.getElementById('downloadStatus').textContent = '';
+    document.getElementById('downloadLinks').replaceChildren();
+
+    setTimeout(() => {
+        document.getElementById('downloadLicenseKey').focus();
+    }, 50);
+}
+
+function closeDownloadGate() {
+    const modal = document.getElementById('downloadGate');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+}
+
+async function verifyDownloadKey(event) {
+    event.preventDefault();
+
+    const keyInput = document.getElementById('downloadLicenseKey');
+    const status = document.getElementById('downloadStatus');
+    const links = document.getElementById('downloadLinks');
+    const button = document.getElementById('downloadVerifyButton');
+
+    const licenseKey = keyInput.value.trim();
+
+    links.replaceChildren();
+    status.textContent = 'Checking your License Key...';
+    status.className = 'text-sm mt-4 text-yellow-300';
+
+    button.disabled = true;
+    button.textContent = 'VERIFYING...';
+
+    try {
+        const response = await fetch(downloadVerifyEndpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({
+                license_key: licenseKey
+            }),
+            cache: 'no-store'
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || data.status !== 'valid') {
+            throw new Error(
+                data.message || 'Invalid or expired License Key.'
+            );
+        }
+
+        if (!Array.isArray(data.files) || data.files.length === 0) {
+            throw new Error('No downloadable files are available yet.');
+        }
+
+        status.textContent = '✓ License Verified — Downloads Unlocked!';
+        status.className =
+            'text-sm mt-4 text-green-400 font-bold';
+
+        data.files.forEach(file => {
+            if (!file || typeof file.name !== 'string'
+                || typeof file.url !== 'string') {
+                return;
+            }
+
+            const url = new URL(file.url);
+
+            // Accept only the protected download endpoint
+            if (url.protocol !== 'https:'
+                || url.hostname !== 'addguru.xyz'
+                || url.pathname !== '/albumstudio/download.php') {
+                return;
+            }
+
+            const link = document.createElement('a');
+            link.href = url.href;
+            link.className =
+                'block w-full rounded-xl border border-green-500/50 ' +
+                'bg-green-600 hover:bg-green-500 text-white font-bold ' +
+                'text-center p-3 break-all transition';
+
+            const icon = document.createElement('i');
+            icon.className = 'fa-solid fa-download mr-2';
+
+            link.appendChild(icon);
+            link.appendChild(
+                document.createTextNode('Download ' + file.name)
+            );
+
+            links.appendChild(link);
+        });
+
+        if (!links.children.length) {
+            throw new Error('No supported download links were returned.');
+        }
+
+    } catch (error) {
+        status.textContent =
+            error.message || 'Could not verify the key. Please retry.';
+        status.className = 'text-sm mt-4 text-red-400';
+        links.replaceChildren();
+
+    } finally {
+        button.disabled = false;
+        button.innerHTML =
+            '<i class="fa-solid fa-lock mr-2"></i> VERIFY & UNLOCK';
+    }
+}
+
+document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') {
+        closeDownloadGate();
+    }
+});
+		
+		@keyframes downloadPulse {
+    0%, 100% {
+        box-shadow: 0 0 14px rgba(250,204,21,.35);
+        transform: translateY(0);
+    }
+    50% {
+        box-shadow: 0 0 30px rgba(250,204,21,.8);
+        transform: translateY(-2px);
+    }
+}
+
+.download-now-btn {
+    background: linear-gradient(100deg, #facc15, #fff2a8, #eab308);
+    color: #080b12;
+    border: 1px solid #fde68a;
+    animation: downloadPulse 1.8s ease-in-out infinite;
+    cursor: pointer;
+}
+
+.download-now-btn:hover {
+    filter: brightness(1.12);
+}
+		
     </script>
 
 </body>
