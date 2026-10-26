@@ -44,6 +44,30 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
+	
+	@keyframes downloadPulse {
+    0%, 100% {
+        box-shadow: 0 0 14px rgba(250,204,21,.35);
+        transform: translateY(0);
+    }
+    50% {
+        box-shadow: 0 0 30px rgba(250,204,21,.8);
+        transform: translateY(-2px);
+    }
+}
+
+.download-now-btn {
+    background: linear-gradient(100deg, #facc15, #fff2a8, #eab308);
+    color: #080b12;
+    border: 1px solid #fde68a;
+    animation: downloadPulse 1.8s ease-in-out infinite;
+    cursor: pointer;
+}
+
+.download-now-btn:hover {
+    filter: brightness(1.12);
+}
+	
         /* Anti-Copy User Selection Lock */
         body {
             font-family: 'Poppins', sans-serif;
@@ -819,28 +843,7 @@ document.addEventListener('keydown', function (event) {
     }
 });
 		
-		@keyframes downloadPulse {
-    0%, 100% {
-        box-shadow: 0 0 14px rgba(250,204,21,.35);
-        transform: translateY(0);
-    }
-    50% {
-        box-shadow: 0 0 30px rgba(250,204,21,.8);
-        transform: translateY(-2px);
-    }
-}
-
-.download-now-btn {
-    background: linear-gradient(100deg, #facc15, #fff2a8, #eab308);
-    color: #080b12;
-    border: 1px solid #fde68a;
-    animation: downloadPulse 1.8s ease-in-out infinite;
-    cursor: pointer;
-}
-
-.download-now-btn:hover {
-    filter: brightness(1.12);
-}
+		
 		
     </script>
 
