@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b1220">
+<title>Passport Photo Camera | AlbumStudio PRO</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:#0b1220;color:#f8fafc;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;display:flex;align-items:center;justify-content:center;padding:14px}.card{width:100%;max-width:480px;background:#121c2d;border:1px solid #253752;border-radius:20px;padding:18px;box-shadow:0 20px 60px #0008}.logo{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#2dd4bf}.title{font-size:23px;line-height:1.2;margin:8px 0}.sub{font-size:13px;color:#bdc9dc;line-height:1.5}.camera-wrap{position:relative;background:#020617;border-radius:14px;overflow:hidden;aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;margin-top:14px}.camera-wrap video{width:100%;height:100%;object-fit:cover;display:block}.guide{position:absolute;inset:9% 16%;border:2px solid #2dd4bf;border-radius:48% 48% 42% 42%;pointer-events:none;box-shadow:0 0 0 100vmax #02061722}.status{margin:12px 0;background:#1c2b40;padding:11px;border-radius:10px;font-size:13px;line-height:1.5;color:#2dd4bf;overflow-wrap:anywhere}.btn{width:100%;border:0;border-radius:10px;background:linear-gradient(120deg,#0d9488,#2563eb);padding:15px 12px;color:white;font-size:15px;font-weight:750;cursor:pointer;margin-top:8px}.btn.secondary{background:#243248}.btn:disabled{opacity:.45;cursor:not-allowed}.hint{font-size:12px;color:#94a3b8;line-height:1.5;margin-top:10px}#fallbackStart{display:none}canvas{display:none}
+</style>
+</head>
+<body>
+<main class="card">
+  <div class="logo">AlbumStudio PRO</div>
+  <h1 class="title">Passport Photo Camera</h1>
+  <p class="sub">Keep your face inside the guide. When you tap the shutter, the photo is sent to your Passport Photo Studio on the computer.</p>
+  <div class="camera-wrap"><video id="camera" autoplay playsinline muted></video><div class="guide"></div></div>
+  <div id="status" class="status">Opening the back camera… Please allow camera access.</div>
+  <button id="captureBtn" class="btn" type="button" disabled>● Take Photo & Send</button>
+  <button id="retryBtn" class="btn secondary" type="button" style="display:none">Open Camera</button>
+  <button id="retakeBtn" class="btn secondary" type="button" style="display:none">Retake Photo</button>
+  <canvas id="snapshot"></canvas>
+  <p class="hint">If the browser asks for camera permission, tap Allow. The photo is transferred temporarily and deleted after the computer receives it or the session expires.</p>
+</main>
+<script>
+(function(){
+'use strict';
+const API='https://addguru.xyz/albumstudio/passport-photo-api.php';
+const params=new URLSearchParams(location.search);
+const sid=params.get('sid')||'';
+const token=params.get('token')||'';
+const video=document.getElementById('camera');
+const status=document.getElementById('status');
+const capture=document.getElementById('captureBtn');
+const retry=document.getElementById('retryBtn');
+const retake=document.getElementById('retakeBtn');
+const canvas=document.getElementById('snapshot');
+let stream=null, busy=false;
+function say(message,color){status.textContent=message;if(color)status.style.color=color;}
+function stopCamera(){if(stream){stream.getTracks().forEach(track=>track.stop());stream=null;}video.srcObject=null;}
+if(!/^[a-f0-9]{32}$/.test(sid)||!/^[a-f0-9]{48}$/.test(token)){
+ say('Invalid or expired QR code. Return to the computer and scan its current QR code again.','#fca5a5');
+} else {
+ // Requesting the camera immediately on page load makes scanning the QR start the camera flow.
+ startCamera();
+}
+async function startCamera(){
+ retry.style.display='none';
+ say('Opening the back camera… Please allow camera access.');
+ try{
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia) throw new Error('This browser cannot open the camera. Open the QR link in Chrome or Safari over HTTPS.');
+  stopCamera();
+  stream=await navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:{ideal:'environment'},width:{ideal:1920},height:{ideal:1080}}});
+  video.srcObject=stream;
+  await video.play();
+  capture.disabled=false;
+  say('Camera ready. Frame the face and tap Take Photo & Send.');
+ }catch(error){
+  say((error&&error.message)||'Camera access failed. Allow camera permission and retry.','#fca5a5');
+  retry.style.display='block'; capture.disabled=true;
+ }
+}
+retry.addEventListener('click',startCamera);
+retake.addEventListener('click',async function(){retake.style.display='none';await startCamera();});
+capture.addEventListener('click',async function(){
+ if(busy||!stream||!video.videoWidth) return;
+ busy=true;capture.disabled=true;retry.style.display='none';
+ try{
+  canvas.width=video.videoWidth;canvas.height=video.videoHeight;
+  const context=canvas.getContext('2d');context.drawImage(video,0,0,canvas.width,canvas.height);
+  const blob=await new Promise((resolve,reject)=>canvas.toBlob(value=>value?resolve(value):reject(new Error('Could not capture the photo. Try again.')),'image/jpeg',0.94));
+  stopCamera();say('Photo captured. Sending to your computer…');
+  const form=new FormData();form.append('sid',sid);form.append('token',token);form.append('photo',blob,'passport-camera.jpg');
+  const response=await fetch(API+'?action=upload',{method:'POST',body:form,cache:'no-store'});
+  const result=await response.json().catch(()=>({}));
+  if(!response.ok||!result.ok) throw new Error(result.error||'Upload failed. Scan the QR code again.');
+  say('Photo sent successfully! Check the computer screen.','#34d399');
+  capture.textContent='✓ Photo Sent';
+ }catch(error){
+  say((error&&error.message)||'Could not send the photo. Please try again.','#fca5a5');
+  retake.style.display='block';
+ }finally{busy=false;}
+});
+window.addEventListener('pagehide',stopCamera);
+})();
+</script>
+</body>
+</html>
