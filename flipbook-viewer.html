@@ -3,65 +3,475 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#080d18">
-<title>AlbumStudio PRO · Digital Album</title>
+<meta name="theme-color" content="#070b14">
+<title>AlbumStudio PRO · 3D Digital Album</title>
 <style>
-:root{color-scheme:dark;--bg:#080d18;--panel:#111a2a;--line:#263650;--gold:#e9c36e;--text:#f4f6fb;--muted:#9aa9bf;--accent:#12b8a6}
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:radial-gradient(ellipse at 50% -10%,#1a2a42 0,#080d18 58%);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}
-body{min-height:100dvh;display:flex;flex-direction:column}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px clamp(14px,3vw,32px);border-bottom:1px solid #263650;background:#09111fdc;backdrop-filter:blur(14px);position:sticky;top:0;z-index:10}.brand{font-weight:900;letter-spacing:.3px;color:#f7d98d}.brand small{display:block;font-size:10px;color:#a8b6cb;font-weight:600;letter-spacing:2px;margin-top:3px}.status{font-size:11px;color:#9fb1c9}
-.main{width:min(100%,1100px);margin:auto;padding:24px 14px 32px;display:flex;flex-direction:column;align-items:center;gap:18px}.heading{text-align:center}.heading h1{margin:0;font-family:Georgia,serif;font-size:clamp(20px,4vw,30px);color:var(--gold);letter-spacing:.4px}.heading p{margin:7px 0 0;color:var(--muted);font-size:13px}
-.book-wrap{width:min(92vw,760px);position:relative;perspective:1900px;filter:drop-shadow(0 25px 30px #0009)}.book{position:relative;width:100%;aspect-ratio:820/560;transform-style:preserve-3d;transform:rotateY(-1.5deg);background:#f7f4ee;border-radius:4px 9px 9px 4px;box-shadow:inset 9px 0 12px #0002,5px 4px 0 #bba875,8px 8px 0 #35302a;overflow:visible}
-.page-under{position:absolute;inset:0;overflow:hidden;background:#f7f4ee;border-radius:4px 8px 8px 4px}.page-under img,.face img{position:absolute;top:0;left:0;width:100%;height:100%;display:block;object-fit:contain;background:#fff}
-.sheet{position:absolute;inset:0;transform-style:preserve-3d;transform-origin:left center;transition:transform .78s cubic-bezier(.22,.72,.18,1);z-index:3;border-radius:4px 8px 8px 4px}.sheet.flip-next{transform:rotateY(-180deg)}.sheet.flip-prev{transform:rotateY(180deg)}.face{position:absolute;inset:0;overflow:hidden;backface-visibility:hidden;background:#fff;border-radius:4px 8px 8px 4px}.face.front{box-shadow:inset 8px 0 12px #0002}.face.back{transform:rotateY(180deg);box-shadow:inset -8px 0 12px #0002}
-.book:after{content:"";position:absolute;z-index:5;right:-5px;top:2%;bottom:2%;width:5px;background:linear-gradient(90deg,#c9b88d,#fff2c4,#6c6049);border-radius:0 3px 3px 0;box-shadow:2px 1px 5px #0008;pointer-events:none}.spine-shadow{position:absolute;left:0;top:0;bottom:0;width:13px;z-index:6;background:linear-gradient(90deg,#0003,transparent);pointer-events:none}
-.controls{width:min(100%,620px);display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;background:#101a2ad9;border:1px solid var(--line);padding:10px;border-radius:14px;box-shadow:0 10px 30px #0004}.controls button,.music button{border:1px solid #3b526f;background:linear-gradient(#203653,#14243a);color:#f4f7fc;border-radius:9px;padding:10px 14px;font-size:12px;font-weight:800;cursor:pointer}.controls button.primary,.music button{background:linear-gradient(120deg,#087f77,#11b9a4);border-color:#20d1be;color:#041b1a}.controls button:disabled{opacity:.35;cursor:not-allowed}.counter{min-width:115px;text-align:center;font-size:12px;color:#e8ca83;font-weight:800}.music{width:min(100%,620px);display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;background:#101a2ad9;border:1px solid var(--line);padding:10px;border-radius:14px}.music audio{width:min(100%,380px);height:34px}.music-note{font-size:11px;color:var(--muted)}.loading,.error{padding:22px;text-align:center;color:#c3d0e2;background:#111a2a;border:1px solid var(--line);border-radius:12px;width:min(100%,620px)}.error{color:#ffb6b6;border-color:#773b48}.footer{padding:18px;text-align:center;color:#72839b;font-size:10px;letter-spacing:.5px}.tap-help{font-size:11px;color:#9dadc3;text-align:center}.hidden{display:none!important}
-@media(max-width:560px){.top{padding:12px}.status{font-size:10px}.main{padding:19px 8px 26px;gap:14px}.book-wrap{width:96vw}.controls{gap:6px;padding:8px}.controls button{padding:10px 11px}.music{padding:9px}.music audio{width:100%}}
-@media(prefers-reduced-motion:reduce){.sheet{transition:none}}
+:root {
+  color-scheme: dark;
+  --bg: #070b14;
+  --panel: #101929;
+  --line: #263650;
+  --gold: #f3ce7a;
+  --text: #f4f6fb;
+  --muted: #9aa9bf;
+  --accent: #12b8a6;
+}
+* { box-sizing: border-box; user-select: none; -webkit-user-select: none; }
+html, body {
+  margin: 0;
+  min-height: 100%;
+  background: radial-gradient(ellipse at 50% -10%, #1c2d4a 0%, #070b14 65%);
+  color: var(--text);
+  font-family: Inter, 'Segoe UI', Arial, sans-serif;
+  overflow-x: hidden;
+}
+body {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* Ambient Golden Particles Background */
+#bgCanvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px clamp(14px, 3vw, 32px);
+  border-bottom: 1px solid rgba(233, 195, 110, 0.2);
+  background: rgba(9, 15, 28, 0.85);
+  backdrop-filter: blur(14px);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+.brand {
+  font-weight: 900;
+  font-size: 16px;
+  letter-spacing: 0.4px;
+  color: var(--gold);
+}
+.brand small {
+  display: block;
+  font-size: 9px;
+  color: #a8b6cb;
+  font-weight: 600;
+  letter-spacing: 2px;
+  margin-top: 2px;
+}
+.top-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.status {
+  font-size: 12px;
+  font-weight: 700;
+  color: #e8ca83;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(233, 195, 110, 0.25);
+}
+.icon-btn {
+  border: 1px solid #3b526f;
+  background: #16243a;
+  color: #f4f7fc;
+  border-radius: 8px;
+  padding: 6px 11px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.icon-btn:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.main {
+  width: min(100%, 1380px);
+  margin: auto;
+  padding: 14px 16px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  position: relative;
+  z-index: 5;
+  flex: 1;
+  justify-content: center;
+}
+.heading { text-align: center; }
+.heading h1 {
+  margin: 0;
+  font-family: Georgia, serif;
+  font-size: clamp(18px, 3vw, 26px);
+  color: var(--gold);
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.6);
+}
+.heading p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* Full 12x36 Open Book Spread Container (Left + Right Page Together) */
+.book-wrap {
+  width: min(96vw, 1220px);
+  position: relative;
+  perspective: 2400px;
+  filter: drop-shadow(0 28px 36px rgba(0, 0, 0, 0.85));
+}
+.book {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1640 / 560; /* Full 2-page 12x36 spread ratio */
+  transform-style: preserve-3d;
+  transform: rotateX(2.5deg);
+  border-radius: 8px;
+  transition: transform 0.35s ease;
+}
+
+/* Multi-page Realistic Book Thickness Rim */
+.book::before {
+  content: "";
+  position: absolute;
+  inset: -4px -7px -9px -7px;
+  background: linear-gradient(180deg, #3c3122, #1f1912);
+  border: 2px solid #c8a962;
+  border-radius: 10px;
+  z-index: 0;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.8);
+}
+
+/* Static Left & Right Halves */
+.half-page {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  overflow: hidden;
+  background: #fdfbf7;
+  z-index: 2;
+  backface-visibility: hidden;
+}
+.half-page.left {
+  left: 0;
+  border-radius: 6px 0 0 6px;
+  box-shadow: inset -14px 0 22px rgba(0,0,0,0.22), -3px 0 0 #d9d0c1, -6px 0 0 #b8ae9e;
+}
+.half-page.right {
+  right: 0;
+  border-radius: 0 6px 6px 0;
+  box-shadow: inset 14px 0 22px rgba(0,0,0,0.22), 3px 0 0 #d9d0c1, 6px 0 0 #b8ae9e;
+}
+.half-page.blank-paper {
+  background: linear-gradient(135deg, #fffdfa 0%, #f3efe6 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.half-page.blank-paper::after {
+  content: "AlbumStudio PRO";
+  font-family: Georgia, serif;
+  font-size: clamp(12px, 1.6vw, 18px);
+  color: rgba(165, 148, 114, 0.35);
+  letter-spacing: 3px;
+  font-weight: bold;
+}
+
+/* Page Artwork Layer */
+.page-art {
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-color: #fff;
+}
+
+/* 3D Turning Sheet */
+.turn-sheet {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  transform-style: preserve-3d;
+  z-index: 8;
+  pointer-events: none;
+  transition: transform 0.85s cubic-bezier(0.24, 0.74, 0.2, 1);
+}
+.turn-sheet.next {
+  left: 50%;
+  transform-origin: left center;
+}
+.turn-sheet.next.turning {
+  transform: rotateY(-180deg);
+}
+.turn-sheet.prev {
+  left: 0;
+  transform-origin: right center;
+}
+.turn-sheet.prev.turning {
+  transform: rotateY(180deg);
+}
+.turn-face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  backface-visibility: hidden;
+  background: #fff;
+}
+.turn-face.front {
+  border-radius: 0 6px 6px 0;
+  box-shadow: inset 12px 0 20px rgba(0,0,0,0.22), 0 12px 30px rgba(0,0,0,0.45);
+}
+.turn-face.back {
+  transform: rotateY(180deg);
+  border-radius: 6px 0 0 6px;
+  box-shadow: inset -12px 0 20px rgba(0,0,0,0.22), 0 12px 30px rgba(0,0,0,0.45);
+}
+.turn-sheet.prev .turn-face.front {
+  border-radius: 6px 0 0 6px;
+}
+.turn-sheet.prev .turn-face.back {
+  border-radius: 0 6px 6px 0;
+}
+
+/* Center Book Spine Crease */
+.spine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 28px;
+  transform: translateX(-50%);
+  z-index: 10;
+  background: linear-gradient(90deg,
+    rgba(0,0,0,0) 0%,
+    rgba(0,0,0,0.35) 38%,
+    rgba(20,15,10,0.75) 50%,
+    rgba(255,255,255,0.18) 54%,
+    rgba(0,0,0,0.35) 64%,
+    rgba(0,0,0,0) 100%);
+  pointer-events: none;
+}
+
+/* Side Hover Click Zones on the Book */
+.click-zone {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 18%;
+  z-index: 12;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.click-zone:hover { opacity: 1; }
+.click-zone.left { left: 0; justify-content: flex-start; padding-left: 12px; }
+.click-zone.right { right: 0; justify-content: flex-end; padding-right: 12px; }
+.zone-arrow {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(10, 16, 28, 0.78);
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: bold;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.6);
+}
+
+.tap-help {
+  font-size: 11px;
+  color: #9dadc3;
+  text-align: center;
+}
+
+/* Bottom Navigation Bar */
+.controls {
+  width: min(100%, 720px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  background: rgba(16, 26, 42, 0.88);
+  border: 1px solid var(--line);
+  padding: 9px 14px;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+}
+.controls button, .music button {
+  border: 1px solid #3b526f;
+  background: linear-gradient(#203653, #14243a);
+  color: #f4f7fc;
+  border-radius: 9px;
+  padding: 9px 14px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.controls button:hover:not(:disabled) {
+  border-color: var(--gold);
+  transform: translateY(-1px);
+}
+.controls button.primary, .music button {
+  background: linear-gradient(120deg, #087f77, #11b9a4);
+  border-color: #20d1be;
+  color: #041b1a;
+}
+.controls button.active-auto {
+  background: linear-gradient(120deg, #d97706, #f59e0b);
+  border-color: #fde68a;
+  color: #111;
+}
+.controls button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.counter {
+  min-width: 120px;
+  text-align: center;
+  font-size: 12px;
+  color: #e8ca83;
+  font-weight: 800;
+}
+
+.music {
+  width: min(100%, 720px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  background: rgba(16, 26, 42, 0.88);
+  border: 1px solid var(--line);
+  padding: 8px 14px;
+  border-radius: 14px;
+}
+.music audio { width: min(100%, 340px); height: 32px; }
+.music-note { font-size: 11px; color: var(--muted); }
+
+.loading, .error {
+  padding: 24px;
+  text-align: center;
+  color: #c3d0e2;
+  background: #111a2a;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  width: min(100%, 620px);
+}
+.error { color: #ffb6b6; border-color: #773b48; }
+.footer {
+  padding: 12px;
+  text-align: center;
+  color: #72839b;
+  font-size: 10px;
+  letter-spacing: 0.6px;
+  position: relative;
+  z-index: 5;
+}
+.hidden { display: none !important; }
+
+@media (max-width: 640px) {
+  .top { padding: 10px 12px; }
+  .status { font-size: 10px; padding: 4px 8px; }
+  .main { padding: 10px 6px 18px; gap: 10px; }
+  .book-wrap { width: 98vw; }
+  .controls { gap: 6px; padding: 8px; }
+  .controls button { padding: 8px 10px; font-size: 11px; }
+  .counter { min-width: 90px; font-size: 11px; }
+}
 </style>
 </head>
 <body>
-<header class="top"><div class="brand">AlbumStudio PRO<small>DIGITAL WEDDING ALBUM</small></div><div class="status" id="loadStatus">Opening album…</div></header>
+
+<canvas id="bgCanvas"></canvas>
+
+<header class="top">
+  <div class="brand">AlbumStudio PRO<small>3D DIGITAL WEDDING ALBUM</small></div>
+  <div class="top-right">
+    <div class="status" id="loadStatus">Opening album…</div>
+    <button class="icon-btn" id="fullscreenBtn" type="button" title="Toggle Fullscreen">⛶ Fullscreen</button>
+  </div>
+</header>
+
 <main class="main">
-  <section class="heading"><h1 id="albumTitle">Digital Album</h1><p id="albumSub">A beautiful collection of memories</p></section>
-  <div class="loading" id="loading">Loading your album pages…</div>
+  <section class="heading">
+    <h1 id="albumTitle">Digital Wedding Album</h1>
+    <p id="albumSub">Full 12x36 Panoramic 3D Spread View</p>
+  </section>
+
+  <div class="loading" id="loading">Loading your full-spread 3D album…</div>
   <div class="error hidden" id="errorBox"></div>
+
   <div class="book-wrap hidden" id="bookWrap">
     <div class="book" id="book">
-      <div class="page-under"><img id="underImage" alt="Next album leaf"></div>
-      <div class="sheet" id="sheet">
-        <div class="face front"><img id="frontImage" alt="Current album leaf"></div>
-        <div class="face back"><img id="backImage" alt="Turning album leaf"></div>
+      <div class="half-page left" id="leftPage"></div>
+      <div class="half-page right" id="rightPage"></div>
+      <div class="turn-sheet hidden" id="turnSheet">
+        <div class="turn-face front" id="turnFront"></div>
+        <div class="turn-face back" id="turnBack"></div>
       </div>
-      <div class="spine-shadow"></div>
+      <div class="spine" id="spine"></div>
+      <div class="click-zone left" id="zoneLeft" title="Previous Spread"><div class="zone-arrow">‹</div></div>
+      <div class="click-zone right" id="zoneRight" title="Next Spread"><div class="zone-arrow">›</div></div>
     </div>
   </div>
-  <div class="tap-help hidden" id="tapHelp">Swipe left/right or use the page buttons to turn each album leaf.</div>
+
+  <div class="tap-help hidden" id="tapHelp">Tap the left/right edges of the album, swipe, or use the buttons below to flip full spreads.</div>
+
   <nav class="controls hidden" id="controls" aria-label="Album navigation">
-    <button id="firstBtn" title="First page">⟪ First</button>
-    <button id="prevBtn" title="Previous page">‹ Previous</button>
-    <span class="counter" id="pageCounter">Page 1 / 1</span>
-    <button class="primary" id="nextBtn" title="Next page">Next ›</button>
-    <button id="lastBtn" title="Last page">Last ⟫</button>
+    <button id="firstBtn" title="First Spread">⟪ First</button>
+    <button id="prevBtn" title="Previous Spread">‹ Prev</button>
+    <span class="counter" id="pageCounter">1 / 1</span>
+    <button class="primary" id="nextBtn" title="Next Spread">Next ›</button>
+    <button id="lastBtn" title="Last Spread">Last ⟫</button>
+    <button id="autoPlayBtn" type="button" title="Auto Flip Slideshow">▶ Auto Play</button>
   </nav>
+
   <section class="music hidden" id="musicPanel">
     <button id="musicPlayBtn" type="button">▶ Play Music</button>
-    <span class="music-note" id="musicHint">Background music from AlbumStudio PRO server</span>
+    <span class="music-note" id="musicHint">Background music from AlbumStudio PRO Cloud</span>
     <audio id="albumMusic" controls loop preload="none"></audio>
   </section>
 </main>
-<footer class="footer">DIGITAL ALBUM · POWERED BY ALBUMSTUDIO PRO</footer>
+
+<footer class="footer">3D DIGITAL ALBUM · POWERED BY ALBUMSTUDIO PRO</footer>
+
 <script>
 (() => {
   'use strict';
   const API = 'https://addguru.xyz/album-api/api.php';
   const params = new URLSearchParams(location.search);
   const id = (params.get('id') || '').trim();
-  const $ = value => document.getElementById(value);
+  const $ = val => document.getElementById(val);
   const roleOrder = { front: 0, 'first-page': 1, normal: 2, 'last-page': 3, back: 4 };
-  let pages = [];
+
+  let spreads = [];
   let current = 0;
   let flipping = false;
   let touchStartX = null;
+  let autoTimer = null;
 
   function showError(message) {
     $('loading').classList.add('hidden');
@@ -70,54 +480,97 @@ body{min-height:100dvh;display:flex;flex-direction:column}.top{display:flex;alig
     $('loadStatus').textContent = 'Album unavailable';
   }
 
-  function expandUploadedPages(rawPages) {
+  // Build Full Two-Page Open Book Spreads so Left & Right halves appear together!
+  function buildFullBookSpreads(rawPages) {
     const ordered = rawPages.slice().sort((a, b) =>
       (roleOrder[a.role] ?? 2) - (roleOrder[b.role] ?? 2) || (Number(a.index) || 0) - (Number(b.index) || 0)
     );
-    const result = [];
-    let spreadNumber = 0;
-    for (const page of ordered) {
-      const role = page.role || 'normal';
-      if (role === 'normal') {
-        spreadNumber++;
-        result.push({ url: page.url, crop: 'left', label: `Spread ${spreadNumber} · Left Page`, role: 'normal-left' });
-        result.push({ url: page.url, crop: 'right', label: `Spread ${spreadNumber} · Right Page`, role: 'normal-right' });
+    const list = [];
+    let spreadCount = 0;
+
+    for (const p of ordered) {
+      const role = p.role || 'normal';
+      if (role === 'front') {
+        list.push({
+          label: 'Front Cover',
+          left: { mode: 'blank' },
+          right: { url: p.url, mode: 'single' }
+        });
+      } else if (role === 'first-page') {
+        list.push({
+          label: 'First Inside Page',
+          left: { mode: 'blank' },
+          right: { url: p.url, mode: 'single' }
+        });
+      } else if (role === 'last-page') {
+        list.push({
+          label: 'Last Inside Page',
+          left: { url: p.url, mode: 'single' },
+          right: { mode: 'blank' }
+        });
+      } else if (role === 'back') {
+        list.push({
+          label: 'Back Cover',
+          left: { url: p.url, mode: 'single' },
+          right: { mode: 'blank' }
+        });
       } else {
-        const label = role === 'front' ? 'Front Cover' : role === 'first-page' ? 'First Page' : role === 'last-page' ? 'Last Page' : role === 'back' ? 'Back Cover' : 'Page';
-        result.push({ url: page.url, crop: 'full', label, role });
+        spreadCount++;
+        list.push({
+          label: `Full Spread ${spreadCount}`,
+          left: { url: p.url, mode: 'left-half' },
+          right: { url: p.url, mode: 'right-half' }
+        });
       }
     }
-    return result;
+    return list;
   }
 
-  function setLeafImage(elementId, page) {
-    const image = $(elementId);
-    if (!page) { image.removeAttribute('src'); image.style.width = '100%'; image.style.left = '0'; image.style.objectFit = 'contain'; return; }
-    image.src = page.url;
-    image.style.width = page.crop === 'left' || page.crop === 'right' ? '200%' : '100%';
-    image.style.left = page.crop === 'right' ? '-100%' : '0';
-    image.style.objectFit = page.crop === 'full' ? 'contain' : 'fill';
+  function renderSideContent(container, sideData) {
+    container.innerHTML = '';
+    if (!sideData || sideData.mode === 'blank' || !sideData.url) {
+      container.classList.add('blank-paper');
+      return;
+    }
+    container.classList.remove('blank-paper');
+    const div = document.createElement('div');
+    div.className = 'page-art';
+    if (sideData.mode === 'single') {
+      div.style.backgroundImage = `url("${sideData.url}")`;
+      div.style.backgroundSize = '100% 100%';
+      div.style.backgroundPosition = 'center center';
+    } else if (sideData.mode === 'left-half') {
+      div.style.backgroundImage = `url("${sideData.url}")`;
+      div.style.backgroundSize = '200% 100%';
+      div.style.backgroundPosition = 'left center';
+    } else if (sideData.mode === 'right-half') {
+      div.style.backgroundImage = `url("${sideData.url}")`;
+      div.style.backgroundSize = '200% 100%';
+      div.style.backgroundPosition = 'right center';
+    }
+    container.appendChild(div);
   }
 
-  function setPageImages(index) {
-    const page = pages[index];
-    const next = pages[Math.min(index + 1, pages.length - 1)] || page;
-    setLeafImage('frontImage', page);
-    setLeafImage('backImage', next);
-    setLeafImage('underImage', next);
-    $('pageCounter').textContent = `${index + 1} / ${pages.length}`;
+  function renderStaticSpread(index) {
+    const sp = spreads[index];
+    if (!sp) return;
+    renderSideContent($('leftPage'), sp.left);
+    renderSideContent($('rightPage'), sp.right);
+    $('pageCounter').textContent = `${index + 1} / ${spreads.length}`;
+    $('loadStatus').textContent = sp.label;
     $('prevBtn').disabled = index <= 0;
     $('firstBtn').disabled = index <= 0;
-    $('nextBtn').disabled = index >= pages.length - 1;
-    $('lastBtn').disabled = index >= pages.length - 1;
-    $('loadStatus').textContent = page ? page.label : 'Album ready';
-    $('book').setAttribute('aria-label', `${page ? page.label : 'Page'} · ${index + 1} of ${pages.length}`);
+    $('nextBtn').disabled = index >= spreads.length - 1;
+    $('lastBtn').disabled = index >= spreads.length - 1;
   }
 
-  function turn(delta) {
-    if (flipping || !pages.length) return;
-    const target = Math.max(0, Math.min(pages.length - 1, current + delta));
-    if (target === current) return;
+  function turnSpread(delta) {
+    if (flipping || !spreads.length) return;
+    const target = Math.max(0, Math.min(spreads.length - 1, current + delta));
+    if (target === current) {
+      if (autoTimer) stopAutoPlay();
+      return;
+    }
     flipping = true;
 
     const audio = $('albumMusic');
@@ -125,37 +578,103 @@ body{min-height:100dvh;display:flex;flex-direction:column}.top{display:flex;alig
       audio.play().catch(() => {});
     }
 
-    const sheet = $('sheet');
-    setLeafImage('frontImage', pages[current]);
-    setLeafImage('backImage', pages[target]);
-    setLeafImage('underImage', pages[target]);
-    sheet.classList.remove('flip-next', 'flip-prev');
-    void sheet.offsetWidth;
-    sheet.classList.add(delta > 0 ? 'flip-next' : 'flip-prev');
+    const fromSp = spreads[current];
+    const toSp = spreads[target];
+    const turnSheet = $('turnSheet');
+    const turnFront = $('turnFront');
+    const turnBack = $('turnBack');
+
+    turnSheet.classList.remove('hidden', 'next', 'prev', 'turning');
+
+    if (delta > 0) {
+      // Turning right page over to the left
+      turnSheet.classList.add('next');
+      renderSideContent(turnFront, fromSp.right);
+      renderSideContent(turnBack, toSp.left);
+      renderSideContent($('leftPage'), fromSp.left);
+      renderSideContent($('rightPage'), toSp.right);
+    } else {
+      // Turning left page back over to the right
+      turnSheet.classList.add('prev');
+      renderSideContent(turnFront, fromSp.left);
+      renderSideContent(turnBack, toSp.right);
+      renderSideContent($('leftPage'), toSp.left);
+      renderSideContent($('rightPage'), fromSp.right);
+    }
+
+    void turnSheet.offsetWidth;
+    requestAnimationFrame(() => {
+      turnSheet.classList.add('turning');
+    });
+
     window.setTimeout(() => {
       current = target;
-      sheet.classList.remove('flip-next', 'flip-prev');
-      setPageImages(current);
+      turnSheet.classList.add('hidden');
+      turnSheet.classList.remove('next', 'prev', 'turning');
+      renderStaticSpread(current);
       flipping = false;
-    }, 820);
+    }, 860);
   }
 
-  $('firstBtn').addEventListener('click', () => { if (current) turn(-current); });
-  $('prevBtn').addEventListener('click', () => turn(-1));
-  $('nextBtn').addEventListener('click', () => turn(1));
-  $('lastBtn').addEventListener('click', () => { if (current < pages.length - 1) turn(pages.length - 1 - current); });
-  document.addEventListener('keydown', event => {
-    if (event.key === 'ArrowLeft') turn(-1);
-    if (event.key === 'ArrowRight') turn(1);
+  // Auto-Play Slideshow
+  function stopAutoPlay() {
+    if (autoTimer) {
+      clearInterval(autoTimer);
+      autoTimer = null;
+    }
+    $('autoPlayBtn').textContent = '▶ Auto Play';
+    $('autoPlayBtn').classList.remove('active-auto');
+  }
+
+  $('autoPlayBtn').addEventListener('click', () => {
+    if (autoTimer) {
+      stopAutoPlay();
+      return;
+    }
+    $('autoPlayBtn').textContent = '⏸ Stop Auto';
+    $('autoPlayBtn').classList.add('active-auto');
+    autoTimer = setInterval(() => {
+      if (current < spreads.length - 1) {
+        turnSpread(1);
+      } else {
+        current = -1;
+        turnSpread(1);
+      }
+    }, 3400);
   });
-  $('bookWrap').addEventListener('touchstart', event => { touchStartX = event.changedTouches[0].clientX; }, { passive: true });
-  $('bookWrap').addEventListener('touchend', event => {
+
+  // Fullscreen Toggle
+  $('fullscreenBtn').addEventListener('click', () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(() => {});
+    } else {
+      document.exitFullscreen().catch(() => {});
+    }
+  });
+
+  $('firstBtn').addEventListener('click', () => { if (!flipping && current > 0) { current = 0; renderStaticSpread(0); } });
+  $('prevBtn').addEventListener('click', () => turnSpread(-1));
+  $('nextBtn').addEventListener('click', () => turnSpread(1));
+  $('lastBtn').addEventListener('click', () => { if (!flipping && current < spreads.length - 1) { current = spreads.length - 1; renderStaticSpread(current); } });
+  $('zoneLeft').addEventListener('click', () => turnSpread(-1));
+  $('zoneRight').addEventListener('click', () => turnSpread(1));
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft') turnSpread(-1);
+    if (e.key === 'ArrowRight') turnSpread(1);
+  });
+
+  $('bookWrap').addEventListener('touchstart', e => {
+    touchStartX = e.changedTouches[0].clientX;
+  }, { passive: true });
+  $('bookWrap').addEventListener('touchend', e => {
     if (touchStartX === null) return;
-    const distance = event.changedTouches[0].clientX - touchStartX;
-    if (Math.abs(distance) > 45) turn(distance < 0 ? 1 : -1);
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 40) turnSpread(dx < 0 ? 1 : -1);
     touchStartX = null;
   }, { passive: true });
 
+  // Music Controls
   const audio = $('albumMusic');
   $('musicPlayBtn').addEventListener('click', async () => {
     try {
@@ -169,11 +688,21 @@ body{min-height:100dvh;display:flex;flex-direction:column}.top{display:flex;alig
         $('musicPlayBtn').textContent = '▶ Play Music';
       }
     } catch (_) {
-      $('musicHint').textContent = 'Tap Play Music once to allow audio playback on this device.';
+      $('musicHint').textContent = 'Tap Play Music once to enable sound.';
     }
   });
   audio.addEventListener('play', () => { $('musicPlayBtn').textContent = '⏸ Pause Music'; });
   audio.addEventListener('pause', () => { $('musicPlayBtn').textContent = '▶ Play Music'; });
+
+  // Preload images for smooth page turns
+  function preloadAllImages(rawPages) {
+    rawPages.forEach(p => {
+      if (p.url) {
+        const img = new Image();
+        img.src = p.url;
+      }
+    });
+  }
 
   async function loadAlbum() {
     if (!id || !/^[a-zA-Z0-9_-]{4,64}$/.test(id)) {
@@ -182,37 +711,77 @@ body{min-height:100dvh;display:flex;flex-direction:column}.top{display:flex;alig
     try {
       const response = await fetch(API + '?action=get&id=' + encodeURIComponent(id), { cache: 'no-store' });
       if (response.status === 404) {
-        throw new Error('Album server API not found (404). Please verify that api.php is uploaded to addguru.xyz/album-api/api.php.');
+        throw new Error('Album server API not found (404). Please verify api.php on addguru.xyz.');
       }
       const result = await response.json();
       if (!response.ok || !result.ok) {
         throw new Error(result.error || 'Album could not be found.');
       }
-      // Support both { book: { pages, title, musicUrl } } and flat { pages, title, musicUrl } JSON formats
       const book = result.book || result;
-      const uploaded = Array.isArray(book.pages) ? book.pages.filter(page => page.url) : [];
-      pages = expandUploadedPages(uploaded);
-      if (!pages.length) throw new Error('No album pages are available on the server.');
-      $('albumTitle').textContent = book.title || 'Digital Album';
-      $('albumSub').textContent = `${pages.length} leaves · Swipe or tap Next to flip pages`;
+      const uploaded = Array.isArray(book.pages) ? book.pages.filter(p => p.url) : [];
+      if (!uploaded.length) throw new Error('No album pages are available on the server.');
+
+      preloadAllImages(uploaded);
+      spreads = buildFullBookSpreads(uploaded);
+
+      $('albumTitle').textContent = book.title || 'Digital Wedding Album';
+      $('albumSub').textContent = `${spreads.length} Full 3D Views · Swipe or click page edges to flip`;
       current = 0;
-      setPageImages(current);
+      renderStaticSpread(0);
+
       $('loading').classList.add('hidden');
       $('bookWrap').classList.remove('hidden');
       $('tapHelp').classList.remove('hidden');
       $('controls').classList.remove('hidden');
-      $('loadStatus').textContent = 'Album ready';
+
       if (book.musicUrl) {
         audio.src = book.musicUrl;
         $('musicPanel').classList.remove('hidden');
-        audio.play().then(() => { $('musicPlayBtn').textContent = '⏸ Pause Music'; }).catch(() => {
+        audio.play().then(() => {
+          $('musicPlayBtn').textContent = '⏸ Pause Music';
+        }).catch(() => {
           $('musicHint').textContent = 'Music is ready — tap Play Music or flip a page to start.';
         });
       }
-    } catch (error) {
-      showError(error && error.message ? error.message : 'Could not load this album.');
+    } catch (err) {
+      showError(err && err.message ? err.message : 'Could not load this album.');
     }
   }
+
+  // Subtle Floating Gold Dust Background Animation
+  function initParticles() {
+    const canvas = $('bgCanvas');
+    const ctx = canvas.getContext('2d');
+    let w = canvas.width = window.innerWidth;
+    let h = canvas.height = window.innerHeight;
+    window.addEventListener('resize', () => {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+    });
+    const dots = Array.from({ length: 42 }, () => ({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      r: Math.random() * 2 + 0.6,
+      vy: -(Math.random() * 0.35 + 0.1),
+      vx: (Math.random() - 0.5) * 0.25,
+      a: Math.random() * 0.55 + 0.15
+    }));
+    function draw() {
+      ctx.clearRect(0, 0, w, h);
+      dots.forEach(d => {
+        d.x = (d.x + d.vx + w) % w;
+        d.y = (d.y + d.vy + h) % h;
+        ctx.fillStyle = `rgba(243, 206, 122, ${d.a})`;
+        ctx.beginPath();
+        ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      requestAnimationFrame(draw);
+    }
+    draw();
+  }
+
+  initParticles();
   loadAlbum();
 })();
 </script>
