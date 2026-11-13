@@ -16,7 +16,12 @@
   --muted: #9aa9bf;
   --accent: #12b8a6;
 }
-* { box-sizing: border-box; user-select: none; -webkit-user-select: none; }
+* {
+  box-sizing: border-box;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
 html, body {
   margin: 0;
   min-height: 100%;
@@ -32,7 +37,6 @@ body {
   position: relative;
 }
 
-/* Ambient Golden Particles Background */
 #bgCanvas {
   position: fixed;
   inset: 0;
@@ -127,7 +131,6 @@ body {
   font-size: 12px;
 }
 
-/* Full 12x36 Open Book Spread Container (Left + Right Page Together) */
 .book-wrap {
   width: min(96vw, 1220px);
   position: relative;
@@ -137,26 +140,43 @@ body {
 .book {
   position: relative;
   width: 100%;
-  aspect-ratio: 1640 / 560; /* Full 2-page 12x36 spread ratio */
+  aspect-ratio: 1640 / 560;
   transform-style: preserve-3d;
   transform: rotateX(2.5deg);
   border-radius: 8px;
-  transition: transform 0.35s ease;
+  transition: transform 0.45s cubic-bezier(0.22, 0.7, 0.2, 1);
 }
 
-/* Multi-page Realistic Book Thickness Rim */
+/* Closed Cover States: Center the closed cover & hide the opposite side */
+.book.closed-front {
+  transform: translateX(-25%) rotateX(2.5deg);
+}
+.book.closed-back {
+  transform: translateX(25%) rotateX(2.5deg);
+}
+
+/* Dynamic Hardcover Rim */
 .book::before {
   content: "";
   position: absolute;
-  inset: -4px -7px -9px -7px;
+  top: -4px;
+  bottom: -9px;
+  left: -7px;
+  right: -7px;
   background: linear-gradient(180deg, #3c3122, #1f1912);
   border: 2px solid #c8a962;
   border-radius: 10px;
   z-index: 0;
   box-shadow: 0 12px 28px rgba(0,0,0,0.8);
+  transition: left 0.35s ease, right 0.35s ease;
+}
+.book.closed-front::before {
+  left: calc(50% - 5px);
+}
+.book.closed-back::before {
+  right: calc(50% - 5px);
 }
 
-/* Static Left & Right Halves */
 .half-page {
   position: absolute;
   top: 0;
@@ -166,6 +186,7 @@ body {
   background: #fdfbf7;
   z-index: 2;
   backface-visibility: hidden;
+  transition: opacity 0.2s ease;
 }
 .half-page.left {
   left: 0;
@@ -177,6 +198,15 @@ body {
   border-radius: 0 6px 6px 0;
   box-shadow: inset 14px 0 22px rgba(0,0,0,0.22), 3px 0 0 #d9d0c1, 6px 0 0 #b8ae9e;
 }
+
+/* Completely hidden side when album is closed */
+.half-page.closed-side {
+  opacity: 0;
+  pointer-events: none;
+  background: transparent;
+  box-shadow: none;
+}
+
 .half-page.blank-paper {
   background: linear-gradient(135deg, #fffdfa 0%, #f3efe6 100%);
   display: flex;
@@ -192,15 +222,14 @@ body {
   font-weight: bold;
 }
 
-/* Page Artwork Layer */
 .page-art {
   width: 100%;
   height: 100%;
   background-repeat: no-repeat;
   background-color: #fff;
+  pointer-events: none;
 }
 
-/* 3D Turning Sheet */
 .turn-sheet {
   position: absolute;
   top: 0;
@@ -248,7 +277,6 @@ body {
   border-radius: 0 6px 6px 0;
 }
 
-/* Center Book Spine Crease */
 .spine {
   position: absolute;
   top: 0;
@@ -265,9 +293,9 @@ body {
     rgba(0,0,0,0.35) 64%,
     rgba(0,0,0,0) 100%);
   pointer-events: none;
+  transition: opacity 0.25s;
 }
 
-/* Side Hover Click Zones on the Book */
 .click-zone {
   position: absolute;
   top: 0;
@@ -305,7 +333,6 @@ body {
   text-align: center;
 }
 
-/* Bottom Navigation Bar */
 .controls {
   width: min(100%, 720px);
   display: flex;
@@ -403,7 +430,7 @@ body {
 }
 </style>
 </head>
-<body>
+<body oncontextmenu="return false;" onselectstart="return false;" ondragstart="return false;">
 
 <canvas id="bgCanvas"></canvas>
 
@@ -418,41 +445,41 @@ body {
 <main class="main">
   <section class="heading">
     <h1 id="albumTitle">Digital Wedding Album</h1>
-    <p id="albumSub">Full 12x36 Panoramic 3D Spread View</p>
+    <p id="albumSub">3D Interactive Wedding Album</p>
   </section>
 
-  <div class="loading" id="loading">Loading your full-spread 3D album…</div>
+  <div class="loading" id="loading">Loading your 3D album…</div>
   <div class="error hidden" id="errorBox"></div>
 
   <div class="book-wrap hidden" id="bookWrap">
-    <div class="book" id="book">
-      <div class="half-page left" id="leftPage"></div>
+    <div class="book closed-front" id="book">
+      <div class="half-page left closed-side" id="leftPage"></div>
       <div class="half-page right" id="rightPage"></div>
       <div class="turn-sheet hidden" id="turnSheet">
         <div class="turn-face front" id="turnFront"></div>
         <div class="turn-face back" id="turnBack"></div>
       </div>
-      <div class="spine" id="spine"></div>
-      <div class="click-zone left" id="zoneLeft" title="Previous Spread"><div class="zone-arrow">‹</div></div>
-      <div class="click-zone right" id="zoneRight" title="Next Spread"><div class="zone-arrow">›</div></div>
+      <div class="spine" id="spine" style="opacity:0;"></div>
+      <div class="click-zone left" id="zoneLeft" title="Previous Page"><div class="zone-arrow">‹</div></div>
+      <div class="click-zone right" id="zoneRight" title="Open / Next Page"><div class="zone-arrow">›</div></div>
     </div>
   </div>
 
-  <div class="tap-help hidden" id="tapHelp">Tap the left/right edges of the album, swipe, or use the buttons below to flip full spreads.</div>
+  <div class="tap-help hidden" id="tapHelp">Tap the album cover or click Next to open the album and flip pages.</div>
 
   <nav class="controls hidden" id="controls" aria-label="Album navigation">
-    <button id="firstBtn" title="First Spread">⟪ First</button>
-    <button id="prevBtn" title="Previous Spread">‹ Prev</button>
+    <button id="firstBtn" title="Front Cover">⟪ First</button>
+    <button id="prevBtn" title="Previous Page">‹ Prev</button>
     <span class="counter" id="pageCounter">1 / 1</span>
-    <button class="primary" id="nextBtn" title="Next Spread">Next ›</button>
-    <button id="lastBtn" title="Last Spread">Last ⟫</button>
+    <button class="primary" id="nextBtn" title="Open / Next Page">Next ›</button>
+    <button id="lastBtn" title="Back Cover">Last ⟫</button>
     <button id="autoPlayBtn" type="button" title="Auto Flip Slideshow">▶ Auto Play</button>
   </nav>
 
   <section class="music hidden" id="musicPanel">
     <button id="musicPlayBtn" type="button">▶ Play Music</button>
     <span class="music-note" id="musicHint">Background music from AlbumStudio PRO Cloud</span>
-    <audio id="albumMusic" controls loop preload="none"></audio>
+    <audio id="albumMusic" controls loop preload="none" controlsList="nodownload"></audio>
   </section>
 </main>
 
@@ -461,6 +488,26 @@ body {
 <script>
 (() => {
   'use strict';
+
+  /* ===== Anti-Copy, Anti-Inspect & Code Protection ===== */
+  document.addEventListener('contextmenu', e => e.preventDefault());
+  document.addEventListener('dragstart', e => e.preventDefault());
+  document.addEventListener('copy', e => e.preventDefault());
+  document.addEventListener('cut', e => e.preventDefault());
+  document.addEventListener('keydown', e => {
+    const k = (e.key || '').toLowerCase();
+    if (
+      e.key === 'F12' ||
+      (e.ctrlKey && e.shiftKey && (k === 'i' || k === 'j' || k === 'c')) ||
+      (e.metaKey && e.altKey && (k === 'i' || k === 'j' || k === 'c' || k === 'u')) ||
+      ((e.ctrlKey || e.metaKey) && (k === 'u' || k === 's' || k === 'p' || k === 'c' || k === 'a'))
+    ) {
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    }
+  }, true);
+
   const API = 'https://addguru.xyz/album-api/api.php';
   const params = new URLSearchParams(location.search);
   const id = (params.get('id') || '').trim();
@@ -480,7 +527,7 @@ body {
     $('loadStatus').textContent = 'Album unavailable';
   }
 
-  // Build Full Two-Page Open Book Spreads so Left & Right halves appear together!
+  // Front Cover & Back Cover are true CLOSED single-cover states (no white page beside them)
   function buildFullBookSpreads(rawPages) {
     const ordered = rawPages.slice().sort((a, b) =>
       (roleOrder[a.role] ?? 2) - (roleOrder[b.role] ?? 2) || (Number(a.index) || 0) - (Number(b.index) || 0)
@@ -492,31 +539,36 @@ body {
       const role = p.role || 'normal';
       if (role === 'front') {
         list.push({
-          label: 'Front Cover',
-          left: { mode: 'blank' },
+          type: 'front-cover',
+          label: 'Front Cover (Closed)',
+          left: { mode: 'closed' },
           right: { url: p.url, mode: 'single' }
         });
       } else if (role === 'first-page') {
         list.push({
+          type: 'first-page',
           label: 'First Inside Page',
           left: { mode: 'blank' },
           right: { url: p.url, mode: 'single' }
         });
       } else if (role === 'last-page') {
         list.push({
+          type: 'last-page',
           label: 'Last Inside Page',
           left: { url: p.url, mode: 'single' },
           right: { mode: 'blank' }
         });
       } else if (role === 'back') {
         list.push({
-          label: 'Back Cover',
+          type: 'back-cover',
+          label: 'Back Cover (Closed)',
           left: { url: p.url, mode: 'single' },
-          right: { mode: 'blank' }
+          right: { mode: 'closed' }
         });
       } else {
         spreadCount++;
         list.push({
+          type: 'spread',
           label: `Full Spread ${spreadCount}`,
           left: { url: p.url, mode: 'left-half' },
           right: { url: p.url, mode: 'right-half' }
@@ -528,11 +580,15 @@ body {
 
   function renderSideContent(container, sideData) {
     container.innerHTML = '';
-    if (!sideData || sideData.mode === 'blank' || !sideData.url) {
+    container.classList.remove('blank-paper', 'closed-side');
+    if (!sideData || sideData.mode === 'closed') {
+      container.classList.add('closed-side');
+      return;
+    }
+    if (sideData.mode === 'blank' || !sideData.url) {
       container.classList.add('blank-paper');
       return;
     }
-    container.classList.remove('blank-paper');
     const div = document.createElement('div');
     div.className = 'page-art';
     if (sideData.mode === 'single') {
@@ -551,9 +607,25 @@ body {
     container.appendChild(div);
   }
 
+  function applyClosedBookPosition(sp) {
+    const book = $('book');
+    const spine = $('spine');
+    book.classList.remove('closed-front', 'closed-back');
+    if (sp.left.mode === 'closed' && sp.right.mode !== 'closed') {
+      book.classList.add('closed-front');
+      spine.style.opacity = '0';
+    } else if (sp.right.mode === 'closed' && sp.left.mode !== 'closed') {
+      book.classList.add('closed-back');
+      spine.style.opacity = '0';
+    } else {
+      spine.style.opacity = '1';
+    }
+  }
+
   function renderStaticSpread(index) {
     const sp = spreads[index];
     if (!sp) return;
+    applyClosedBookPosition(sp);
     renderSideContent($('leftPage'), sp.left);
     renderSideContent($('rightPage'), sp.right);
     $('pageCounter').textContent = `${index + 1} / ${spreads.length}`;
@@ -580,24 +652,30 @@ body {
 
     const fromSp = spreads[current];
     const toSp = spreads[target];
+    const book = $('book');
+    const spine = $('spine');
     const turnSheet = $('turnSheet');
     const turnFront = $('turnFront');
     const turnBack = $('turnBack');
 
+    // Smoothly transition book position to target state (open or closed) as the cover flips
+    applyClosedBookPosition(toSp);
+    if (fromSp.left.mode !== 'closed' || toSp.left.mode !== 'closed') {
+      spine.style.opacity = '1';
+    }
+
     turnSheet.classList.remove('hidden', 'next', 'prev', 'turning');
 
     if (delta > 0) {
-      // Turning right page over to the left
       turnSheet.classList.add('next');
       renderSideContent(turnFront, fromSp.right);
-      renderSideContent(turnBack, toSp.left);
+      renderSideContent(turnBack, toSp.left.mode === 'closed' ? { mode: 'blank' } : toSp.left);
       renderSideContent($('leftPage'), fromSp.left);
       renderSideContent($('rightPage'), toSp.right);
     } else {
-      // Turning left page back over to the right
       turnSheet.classList.add('prev');
       renderSideContent(turnFront, fromSp.left);
-      renderSideContent(turnBack, toSp.right);
+      renderSideContent(turnBack, toSp.right.mode === 'closed' ? { mode: 'blank' } : toSp.right);
       renderSideContent($('leftPage'), toSp.left);
       renderSideContent($('rightPage'), fromSp.right);
     }
@@ -616,7 +694,6 @@ body {
     }, 860);
   }
 
-  // Auto-Play Slideshow
   function stopAutoPlay() {
     if (autoTimer) {
       clearInterval(autoTimer);
@@ -637,13 +714,12 @@ body {
       if (current < spreads.length - 1) {
         turnSpread(1);
       } else {
-        current = -1;
-        turnSpread(1);
+        current = 0;
+        renderStaticSpread(0);
       }
     }, 3400);
   });
 
-  // Fullscreen Toggle
   $('fullscreenBtn').addEventListener('click', () => {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen().catch(() => {});
@@ -658,6 +734,11 @@ body {
   $('lastBtn').addEventListener('click', () => { if (!flipping && current < spreads.length - 1) { current = spreads.length - 1; renderStaticSpread(current); } });
   $('zoneLeft').addEventListener('click', () => turnSpread(-1));
   $('zoneRight').addEventListener('click', () => turnSpread(1));
+
+  // Allow clicking directly on the closed Front Cover to open the album
+  $('rightPage').addEventListener('click', () => {
+    if (current === 0) turnSpread(1);
+  });
 
   document.addEventListener('keydown', e => {
     if (e.key === 'ArrowLeft') turnSpread(-1);
@@ -674,7 +755,6 @@ body {
     touchStartX = null;
   }, { passive: true });
 
-  // Music Controls
   const audio = $('albumMusic');
   $('musicPlayBtn').addEventListener('click', async () => {
     try {
@@ -694,7 +774,6 @@ body {
   audio.addEventListener('play', () => { $('musicPlayBtn').textContent = '⏸ Pause Music'; });
   audio.addEventListener('pause', () => { $('musicPlayBtn').textContent = '▶ Play Music'; });
 
-  // Preload images for smooth page turns
   function preloadAllImages(rawPages) {
     rawPages.forEach(p => {
       if (p.url) {
@@ -725,7 +804,7 @@ body {
       spreads = buildFullBookSpreads(uploaded);
 
       $('albumTitle').textContent = book.title || 'Digital Wedding Album';
-      $('albumSub').textContent = `${spreads.length} Full 3D Views · Swipe or click page edges to flip`;
+      $('albumSub').textContent = `${spreads.length} Interactive 3D Views · Tap Cover or Next to Open`;
       current = 0;
       renderStaticSpread(0);
 
@@ -740,7 +819,7 @@ body {
         audio.play().then(() => {
           $('musicPlayBtn').textContent = '⏸ Pause Music';
         }).catch(() => {
-          $('musicHint').textContent = 'Music is ready — tap Play Music or flip a page to start.';
+          $('musicHint').textContent = 'Music is ready — tap Play Music or open the cover to start.';
         });
       }
     } catch (err) {
@@ -748,7 +827,6 @@ body {
     }
   }
 
-  // Subtle Floating Gold Dust Background Animation
   function initParticles() {
     const canvas = $('bgCanvas');
     const ctx = canvas.getContext('2d');
